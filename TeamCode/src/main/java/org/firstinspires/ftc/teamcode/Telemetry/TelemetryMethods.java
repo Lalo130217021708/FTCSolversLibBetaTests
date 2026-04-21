@@ -22,15 +22,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Camera.Limelight;
 
 public class TelemetryMethods {
-    public void TelemetryUpdateCamera(Telemetry telemetry) {
-        telemetry.addLine();
-        telemetry.addData("Bearing ", bearing);
-        telemetry.addData("April Tag ", id);
-        telemetry.addData("range", range);
-        telemetry.addData("Auto running", "Look for more");
-        telemetry.update();
+    public void getRobotTelemetry(Telemetry telemetry) {
+        getChassisTelemetry(telemetry);
+        getLimelightValues(telemetry);
+        getLimelight(telemetry);
     }
-
     public void getChassisTelemetry(Telemetry telemetry){
         telemetry.addData("FLVel", vel[0]);
         telemetry.addData("FRVel", vel[1]);
@@ -39,12 +35,6 @@ public class TelemetryMethods {
         telemetry.addData("Heading" ,actualYaw);
         telemetry.addData("FieldCentric", fieldCentric);
         telemetry.update();
-    }
-    public void getRobotPoseWpiBlueKinda(Telemetry telemetry){
-        telemetry.addData("x", xProof);
-        telemetry.addData("y", yProof);
-        telemetry.addData("z", zProof);
-        telemetry.addData("yaw", yawProof);
     }
     public void getLimelightValues(Telemetry telemetry){
         telemetry.addData("tx", tx);

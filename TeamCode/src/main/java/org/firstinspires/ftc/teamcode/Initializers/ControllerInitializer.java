@@ -24,8 +24,12 @@ public class ControllerInitializer {
         if (Math.abs(input) < deadband) {return 0.0;}
         return input;
     }
+    public void actualizeGamepad(){
+        actualizeGamepad1();
+        actualizeGamepad2();
+    }
     
-    public void ActualizeGamepad1(){
+    public void actualizeGamepad1(){
         LSx1 = applyDeadband(gamepad1.left_stick_x , .05);
         LSy1 = applyDeadband(gamepad1.left_stick_y , .05);
         RSx1 = applyDeadband(gamepad1.right_stick_x , .05);
@@ -46,7 +50,7 @@ public class ControllerInitializer {
         dPadRight1 = gamepad1.dpad_right;
         dPadLeft1 = gamepad1.dpad_left;
     }
-    public void ActualizeGamepad2(){
+    public void actualizeGamepad2(){
         LSx2 = applyDeadband(gamepad2.left_stick_x , .5);
         LSy2 = applyDeadband(gamepad2.left_stick_y , .5);
         RSx2 = applyDeadband(gamepad2.right_stick_x , .5);

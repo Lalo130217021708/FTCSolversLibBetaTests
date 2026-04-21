@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.seattlesolvers.solverslib.drivebase.MecanumDrive;
-import com.seattlesolvers.solverslib.gamepad.SlewRateLimiter;
 import com.seattlesolvers.solverslib.geometry.Rotation2d;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.ChassisSpeeds;
@@ -24,6 +23,7 @@ public class MecanumDriveSub {
     boolean onceSaved = false;
     double zOutput;
 
+    double savedYaw;
 
     MecanumDriveKinematics mecanumDriveKinematics = new MecanumDriveKinematics(
             WheelsPoses.frontLeftPose,
@@ -39,15 +39,6 @@ public class MecanumDriveSub {
 
     PIDFController yawController;
     PIDFCoefficients pidfCoefficients;
-    double savedYaw;
-
-
-    SlewRateLimiter xLimiter = new SlewRateLimiter(2.0);
-    SlewRateLimiter yLimiter = new SlewRateLimiter(2.0);
-    SlewRateLimiter zLimiter = new SlewRateLimiter(2.0);
-
-
-
     public MecanumDriveSub(HardwareMap hardwareMap) {
         frontLeftMotor = new Motor(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
         frontRightMotor = new Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312);
@@ -83,8 +74,8 @@ public class MecanumDriveSub {
         return Rotation2d.fromDegrees(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
     }
 
-    //TODO: Just Confirm this is correct
-    public void mecanumDriveFromRobotPOV(double xInput, double yInput, double zInput){
+    public void driveDriverPOV(double xInput, double yInput, double zInput){
+        savedYaw = actualYaw;
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.toFieldRelativeSpeeds(
                 new ChassisSpeeds(
                     xInput,
@@ -118,9 +109,9 @@ public class MecanumDriveSub {
 
     public void driveRobot(boolean fieldCentric, double xInput, double yInput, double zInput){
         if (fieldCentric) {
-            mecanumDriveFromRobotPOV(xInput, yInput, zInput);
+            driveDriverPOV(xInput, yInput, zInput);
         } else {
-            driveRobotPOV(xInput, zInput, yInput);
+            driveRobotPOV(-xInput, yInput, -zInput);
         }
     }
 
@@ -129,14 +120,6 @@ public class MecanumDriveSub {
         vel[1] = frontRightMotor.getRawPower();
         vel[2] = rearLeftMotor.getRawPower();
         vel[3] = rearRightMotor.getRawPower();
-    }
-
-
-    public void test(){
-        frontLeftMotor.set(1);
-        frontRightMotor.set(1);
-        rearLeftMotor.set(1);
-        rearRightMotor.set(1);
     }
 
     public void stopMotors(){

@@ -33,21 +33,17 @@ public class SolversMegaProof extends OpMode {
     }
     @Override
     public void loop() {
-        controllerInitializer.ActualizeGamepad1();
-        controllerInitializer.ActualizeGamepad2();
-        limelight.getCameraBasicValues();
-        limelight.getFiducialResults();
-        limelight.getBotPose();
+        controllerInitializer.actualizeGamepad();
+        limelight.getLimeValues();
+        telemetryMethods.getRobotTelemetry(telemetry);
         mecanumDriveSub.getActualYaw();
         mecanumDriveSub.getActualVel();
-        telemetryMethods.getChassisTelemetry(telemetry);
-
 
         if (Y1 == 1) {
             fieldCentric = !oncePressed ? !fieldCentric : fieldCentric;
             oncePressed = true;
         } else {
-            mecanumDriveSub.driveRobotPOV(-LSx1, LSy1, -RSx1);
+            mecanumDriveSub.driveRobot(fieldCentric, LSx1, LSy1, RSx1);
             oncePressed = false;
         }
     }

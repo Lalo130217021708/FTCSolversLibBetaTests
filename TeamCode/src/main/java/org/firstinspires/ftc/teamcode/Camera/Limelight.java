@@ -31,6 +31,12 @@ public class Limelight {
         limelight.start();
     }
 
+    public void getLimeValues(){
+        getBotPose();
+        getCameraBasicValues();
+        getFiducialResults();
+    }
+
     public void getBotPose(){
         result = limelight.getLatestResult();
         limelight.updateRobotOrientation(actualYaw);
