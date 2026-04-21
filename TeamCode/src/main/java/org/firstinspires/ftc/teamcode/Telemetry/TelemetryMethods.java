@@ -1,12 +1,5 @@
 package org.firstinspires.ftc.teamcode.Telemetry;
 
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.bearing;
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.id;
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.range;
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.xProof;
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.yProof;
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.yawProof;
-import static org.firstinspires.ftc.teamcode.Camera.Camera_Detection.zProof;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.StrafeDistance_3D;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.ta;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.tagCount;

@@ -79,7 +79,7 @@ public class Limelight {
                     StrafeDistance_3D = fiducial.getRobotPoseTargetSpace().getPosition().y;
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Oye Checa Esto" + e.getMessage());
+                throw new RuntimeException("Oye Check This" + e.getMessage());
             }
         } else {
             id = 0;
