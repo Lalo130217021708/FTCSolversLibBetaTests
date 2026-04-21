@@ -1,0 +1,149 @@
+package org.firstinspires.ftc.teamcode.Subsystems;
+
+import static org.firstinspires.ftc.teamcode.Configurations.DriveConstants.WheelsPoses;
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.seattlesolvers.solverslib.controller.PIDFController;
+import com.seattlesolvers.solverslib.drivebase.MecanumDrive;
+import com.seattlesolvers.solverslib.gamepad.SlewRateLimiter;
+import com.seattlesolvers.solverslib.geometry.Rotation2d;
+import com.seattlesolvers.solverslib.hardware.motors.Motor;
+import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.ChassisSpeeds;
+import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.MecanumDriveKinematics;
+import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.MecanumDriveWheelSpeeds;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+
+public class MecanumDriveSub {
+    IMU imu;
+    public static double actualYaw;
+    public static double[] vel = new double[4];
+    MecanumDrive mecanumDrive;
+    boolean onceSaved = false;
+    double zOutput;
+
+
+    MecanumDriveKinematics mecanumDriveKinematics = new MecanumDriveKinematics(
+            WheelsPoses.frontLeftPose,
+            WheelsPoses.frontRightPose,
+            WheelsPoses.rearLeftPose,
+            WheelsPoses.rearRightPose
+    );
+
+    Motor frontLeftMotor;
+    Motor frontRightMotor;
+    Motor rearLeftMotor;
+    Motor rearRightMotor;
+
+    PIDFController yawController;
+    PIDFCoefficients pidfCoefficients;
+    double savedYaw;
+
+
+    SlewRateLimiter xLimiter = new SlewRateLimiter(2.0);
+    SlewRateLimiter yLimiter = new SlewRateLimiter(2.0);
+    SlewRateLimiter zLimiter = new SlewRateLimiter(2.0);
+
+
+
+    public MecanumDriveSub(HardwareMap hardwareMap) {
+        frontLeftMotor = new Motor(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
+        frontRightMotor = new Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312);
+        rearLeftMotor = new Motor(hardwareMap, "rearLeft", Motor.GoBILDA.RPM_312);
+        rearRightMotor = new Motor(hardwareMap, "rearRight", Motor.GoBILDA.RPM_312);
+
+        frontLeftMotor.setInverted(false);
+        frontRightMotor.setInverted(false);
+        rearLeftMotor.setInverted(false);
+        rearRightMotor.setInverted(false);
+
+        frontLeftMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        frontRightMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        rearLeftMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        rearRightMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+
+        imu = hardwareMap.get(IMU.class, "imu");
+
+        imu.resetYaw();
+
+        mecanumDrive = new MecanumDrive(frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor);
+
+        pidfCoefficients = new PIDFCoefficients(0.03,0.0,0.0,0.0);
+
+        yawController = new PIDFController(pidfCoefficients);
+    }
+
+    public void getActualYaw(){
+        actualYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+
+    public Rotation2d getHeading(){
+        return Rotation2d.fromDegrees(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+    }
+
+    //TODO: Just Confirm this is correct
+    public void mecanumDriveFromRobotPOV(double xInput, double yInput, double zInput){
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.toFieldRelativeSpeeds(
+                new ChassisSpeeds(
+                    xInput,
+                    yInput,
+                    zInput
+                ),
+                getHeading()
+        );
+
+        MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds = mecanumDriveKinematics.toWheelSpeeds(chassisSpeeds);
+
+        frontLeftMotor.set(-mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
+        frontRightMotor.set(-mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
+        rearLeftMotor.set(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
+        rearRightMotor.set(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
+    }
+
+    public void driveRobotPOV(double xInput, double yInput, double zInput){
+        if(zInput == 0){
+            if(!onceSaved){
+                savedYaw = actualYaw;
+                onceSaved = true;
+            }
+            zOutput = yawController.calculate(actualYaw ,savedYaw);
+        } else {
+            zOutput = zInput;
+            onceSaved = false;
+        }
+        mecanumDrive.driveRobotCentric(xInput, yInput, zOutput);
+    }
+
+    public void driveRobot(boolean fieldCentric, double xInput, double yInput, double zInput){
+        if (fieldCentric) {
+            mecanumDriveFromRobotPOV(xInput, yInput, zInput);
+        } else {
+            driveRobotPOV(xInput, zInput, yInput);
+        }
+    }
+
+    public void getActualVel(){
+        vel[0] = frontLeftMotor.getRawPower();
+        vel[1] = frontRightMotor.getRawPower();
+        vel[2] = rearLeftMotor.getRawPower();
+        vel[3] = rearRightMotor.getRawPower();
+    }
+
+
+    public void test(){
+        frontLeftMotor.set(1);
+        frontRightMotor.set(1);
+        rearLeftMotor.set(1);
+        rearRightMotor.set(1);
+    }
+
+    public void stopMotors(){
+        frontLeftMotor.set(0);
+        frontRightMotor.set(0);
+        rearLeftMotor.set(0);
+        rearRightMotor.set(0);
+    }
+
+}
