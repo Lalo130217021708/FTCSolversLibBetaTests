@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.RobotModes.TeleOps;
 
 
+import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.A1;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.LSx1;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.LSy1;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.RSx1;
@@ -19,7 +20,6 @@ public class SolversMegaProof extends OpMode {
     ControllerInitializer controllerInitializer;
     TelemetryMethods telemetryMethods;
     MecanumDriveSub mecanumDriveSub;
-    //Camera_Detection cameraDetection;
     public static boolean fieldCentric = false;
     public static boolean oncePressed = false;
     Limelight limelight;
@@ -27,21 +27,24 @@ public class SolversMegaProof extends OpMode {
     @Override
     public void init() {
         controllerInitializer = new ControllerInitializer(gamepad1, gamepad2);
-        telemetryMethods = new TelemetryMethods();
+        telemetryMethods = new TelemetryMethods(telemetry);
         mecanumDriveSub = new MecanumDriveSub(hardwareMap);
         limelight = new Limelight(hardwareMap);
+        mecanumDriveSub.resetYaw();
     }
+
     @Override
     public void loop() {
         controllerInitializer.actualizeGamepad();
         limelight.getLimeValues();
-        telemetryMethods.getRobotTelemetry(telemetry);
-        mecanumDriveSub.getActualYaw();
-        mecanumDriveSub.getActualVel();
+        telemetryMethods.getRobotTelemetry();
+        mecanumDriveSub.getAllChassisValues();
 
         if (Y1 == 1) {
             fieldCentric = !oncePressed ? !fieldCentric : fieldCentric;
             oncePressed = true;
+        } else if (A1 == 1) {
+            mecanumDriveSub.aprilTagTracking(LSx1, LSy1);
         } else {
             mecanumDriveSub.driveRobot(fieldCentric, LSx1, LSy1, RSx1);
             oncePressed = false;

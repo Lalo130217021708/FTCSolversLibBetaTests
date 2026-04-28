@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.Camera.Limelight.tx;
 import static org.firstinspires.ftc.teamcode.Configurations.DriveConstants.WheelsPoses;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,10 +20,11 @@ public class MecanumDriveSub {
     IMU imu;
     public static double actualYaw;
     public static double[] vel = new double[4];
+
+    public static double[] pos = new double[4];
     MecanumDrive mecanumDrive;
     boolean onceSaved = false;
     double zOutput;
-
     double savedYaw;
 
     MecanumDriveKinematics mecanumDriveKinematics = new MecanumDriveKinematics(
@@ -38,7 +40,10 @@ public class MecanumDriveSub {
     Motor rearRightMotor;
 
     PIDFController yawController;
-    PIDFCoefficients pidfCoefficients;
+    PIDFCoefficients pidfYawCoefficients;
+    PIDFController atController;
+    PIDFCoefficients pidfAtCoefficients;
+
     public MecanumDriveSub(HardwareMap hardwareMap) {
         frontLeftMotor = new Motor(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
         frontRightMotor = new Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312);
@@ -61,13 +66,11 @@ public class MecanumDriveSub {
 
         mecanumDrive = new MecanumDrive(frontLeftMotor, frontRightMotor, rearLeftMotor, rearRightMotor);
 
-        pidfCoefficients = new PIDFCoefficients(0.03,0.0,0.0,0.0);
+        pidfYawCoefficients = new PIDFCoefficients(0.03,0.0,0.0,0.0);
+        pidfAtCoefficients = new PIDFCoefficients(0.032,0.0,0.0,0.0);
 
-        yawController = new PIDFController(pidfCoefficients);
-    }
-
-    public void getActualYaw(){
-        actualYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        yawController = new PIDFController(pidfYawCoefficients);
+        atController = new PIDFController(pidfAtCoefficients);
     }
 
     public Rotation2d getHeading(){
@@ -122,6 +125,19 @@ public class MecanumDriveSub {
         vel[3] = rearRightMotor.getRawPower();
     }
 
+    public void getActualPos(){
+        pos[0] = frontLeftMotor.getCurrentPosition() / frontLeftMotor.getCPR() * 6.28;
+        pos[1] = frontRightMotor.getCurrentPosition() / frontLeftMotor.getCPR() * 6.28;
+        pos[2] = rearLeftMotor.getCurrentPosition() / frontLeftMotor.getCPR() * 6.28;
+    }
+    public void getActualYaw(){
+        actualYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+    public void getAllChassisValues(){
+        getActualVel();
+        getActualPos();
+        getActualYaw();
+    }
     public void stopMotors(){
         frontLeftMotor.set(0);
         frontRightMotor.set(0);
@@ -129,4 +145,12 @@ public class MecanumDriveSub {
         rearRightMotor.set(0);
     }
 
+    public void resetYaw(){
+        imu.resetYaw();
+    }
+
+    public void aprilTagTracking(double xInput, double yInput){
+        double zCalculations = atController.calculate(tx, 0);
+        driveDriverPOV(xInput, yInput, -zCalculations);
+    }
 }
