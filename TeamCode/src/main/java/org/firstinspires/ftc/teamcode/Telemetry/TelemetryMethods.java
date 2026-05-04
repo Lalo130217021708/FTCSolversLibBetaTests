@@ -11,6 +11,10 @@ import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.actualYaw;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.pos;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.vel;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterCPR;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterPos;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterRate;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shoterVel;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Camera.Limelight;
@@ -52,5 +56,11 @@ public class TelemetryMethods {
         telemetry.addData("x Distance Relative Tag", x);
         telemetry.addData("y Distance Relative Tag", y);
         telemetry.addData("Tag Id", Limelight.id);
+    }
+    public void getShooterValues(){
+        telemetry.addData("Shooter CPR", shooterCPR);
+        telemetry.addData("Shooter Pos", shooterPos);
+        telemetry.addData("Shooter Rate", shooterRate);
+        telemetry.addData("Shooter Vel", shoterVel);
     }
 }
