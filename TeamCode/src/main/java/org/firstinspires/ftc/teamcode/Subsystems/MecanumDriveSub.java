@@ -45,7 +45,7 @@ public class MecanumDriveSub {
     /// PIDFControllers and Coefficients Creators
     PIDFController yawController;
     PIDFCoefficients pidfYawCoefficients;
-    PIDFController atController;
+    PIDFController aprilTagController;
     PIDFCoefficients pidfAtCoefficients;
 
     public MecanumDriveSub(HardwareMap hardwareMap) {
@@ -82,8 +82,8 @@ public class MecanumDriveSub {
         yawController = new PIDFController(pidfYawCoefficients);
         yawController.setTolerance(1);
 
-        atController = new PIDFController(pidfAtCoefficients);
-        atController.setTolerance(.25);
+        aprilTagController = new PIDFController(pidfAtCoefficients);
+        aprilTagController.setTolerance(.25);
     }
 
 
@@ -127,7 +127,7 @@ public class MecanumDriveSub {
         }
     }
     public void aprilTagTracking(double xInput, double yInput){
-        double zCalculations = atController.calculate(tx, 0);
+        double zCalculations = aprilTagController.calculate(tx, 0);
         driveDriverPOV(xInput, yInput, -zCalculations);
     }
     public void stopMotors(){
