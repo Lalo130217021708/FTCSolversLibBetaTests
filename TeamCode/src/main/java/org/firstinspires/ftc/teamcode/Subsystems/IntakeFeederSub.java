@@ -1,29 +1,29 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.seattlesolvers.solverslib.hardware.motors.Motor;
 
 public class IntakeFeederSub {
-    private DcMotorEx intakeMotor;
-    private DcMotorEx feederMotor;
+    private final Motor intakeMotor;
+    private final Motor feederMotor;
+
     public IntakeFeederSub(HardwareMap hardwareMap) {
-        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        feederMotor = hardwareMap.get(DcMotorEx.class, "feederMotor");
-        intakeMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        feederMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        intakeMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        feederMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        intakeMotor = new Motor(hardwareMap, "intakeMotor");
+        feederMotor = new Motor(hardwareMap, "feederMotor");
+        intakeMotor.setInverted(true);
+        feederMotor.setInverted(true);
+        intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        feederMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     }
 
     public void intake(double power) {
-        intakeMotor.setPower(power);
+        intakeMotor.set(power);
     }
     public void feeder(double power) {
-        feederMotor.setPower(power);
+        feederMotor.set(power);
     }
     public void stop(){
-        intakeMotor.setPower(0);
-        feederMotor.setPower(0);
+        intakeMotor.set(0);
+        feederMotor.set(0);
     }
 }

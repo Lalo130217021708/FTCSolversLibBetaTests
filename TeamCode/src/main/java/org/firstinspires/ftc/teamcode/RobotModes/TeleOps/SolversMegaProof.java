@@ -12,7 +12,7 @@ import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.RT2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.Y1;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
-import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
+//import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.mecanumDriveSub;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.shooterSub;
 
@@ -47,7 +47,7 @@ public class SolversMegaProof extends OpMode {
     @Override
     public void loop() {
         controllerInitializer.actualizeGamepad();
-        limelight.getLimeValues();
+        //limelight.getLimeValues();
         telemetryMethods.getRobotTelemetry();
         mecanumDriveSub.getAllChassisValues();
         shooterSub.getGetters();

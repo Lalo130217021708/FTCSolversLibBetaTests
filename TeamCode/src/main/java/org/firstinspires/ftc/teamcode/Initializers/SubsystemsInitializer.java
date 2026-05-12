@@ -11,14 +11,14 @@ public class SubsystemsInitializer {
     public static MecanumDriveSub mecanumDriveSub;
     public static IntakeFeederSub intakeFeederSub;
     public static ShooterSub shooterSub;
-    public static Limelight limelight;
+    //public static Limelight limelight;
 
 
     public SubsystemsInitializer(HardwareMap hardwareMap){
         mecanumDriveSub = new MecanumDriveSub(hardwareMap);
         intakeFeederSub = new IntakeFeederSub(hardwareMap);
         shooterSub = new ShooterSub(hardwareMap);
-        limelight = new Limelight(hardwareMap);
+        //limelight = new Limelight(hardwareMap);
     }
 
     public void absStop(){

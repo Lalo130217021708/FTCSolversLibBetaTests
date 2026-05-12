@@ -68,7 +68,7 @@ public class MecanumDriveSub {
         /// Imu Getter
         imu = hardwareMap.get(IMU.class, "imu");
 
-
+        /// Utilities initialized
         mecanumDrive = new MecanumDrive(
                 frontLeftMotor,
                 frontRightMotor,
