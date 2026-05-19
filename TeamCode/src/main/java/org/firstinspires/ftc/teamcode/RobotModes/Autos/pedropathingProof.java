@@ -69,7 +69,7 @@ public class pedropathingProof extends OpMode {
     }
 
     public void buildPaths(){
-
+        scorePreload.endPose();
     }
 
     public Command autoRoutine() {
