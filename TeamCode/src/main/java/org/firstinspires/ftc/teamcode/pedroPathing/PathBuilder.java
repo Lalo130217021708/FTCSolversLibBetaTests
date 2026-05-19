@@ -7,7 +7,7 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 
 public class PathBuilder {
-    private Follower follower;
+    private final Follower follower;
 
     public PathBuilder(Follower follower) {
         this.follower = follower;

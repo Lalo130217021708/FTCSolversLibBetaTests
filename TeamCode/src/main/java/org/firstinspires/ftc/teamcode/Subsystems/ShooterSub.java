@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.ControlSystems.VoltageCompensator.compensateVoltage;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 
@@ -15,6 +17,14 @@ public class ShooterSub {
         shooterMotor.set(power);
     }
 
+    public void shootClose(){
+        shoot(compensateVoltage(.65));
+    }
+
+    public void shootFar(){
+        shoot(compensateVoltage(.735));
+    }
+
     public void getShooterMotorCPR(){
         shooterCPR = shooterMotor.getCPR();
     }
@@ -26,7 +36,7 @@ public class ShooterSub {
     }
 
     public void getShooterVel(){
-        shoterVel = shooterMotor.getRate() * shooterMotor.getCPR() * 60;
+        shoterVel = shooterMotor.getRate() * shooterMotor.getCPR() * .006;
     }
 
     public void getGetters(){

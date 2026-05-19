@@ -28,5 +28,7 @@ dependencies {
 
     implementation 'com.bylazar:fullpanels:1.0.12'
 
+    implementation 'com.acmerobotics.dashboard:dashboard:0.5.1'
+
 }
 

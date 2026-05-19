@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.pedropathing.control.FilteredPIDFCoefficients;
+import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -11,12 +14,17 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+@Config
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(11);
+            .mass(11)
+            .headingPIDFCoefficients(new PIDFCoefficients(1.25, 0, 0, 0))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(.085, 0, 0, 0, 0))
+            .translationalPIDFCoefficients(new PIDFCoefficients(.15, 0, 0, 0))
+            .centripetalScaling(.1);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
-            .maxPower(.95)
+            .maxPower(.9)
             .xVelocity(63.29137079302875)
             .yVelocity(50.501498426854305)
             .rightFrontMotorName("frontRight")
@@ -29,9 +37,9 @@ public class Constants {
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
 
     public static ThreeWheelIMUConstants localizerConstants = new ThreeWheelIMUConstants()
-            .forwardTicksToInches(.0029972096626919593)
-            .strafeTicksToInches(.002994737475)
-            .turnTicksToInches(.0019899240877845133)
+            .forwardTicksToInches(0.00296843400339)
+            .strafeTicksToInches(0.00296843400339)
+            .turnTicksToInches(0.00296843400339)
             .leftPodY(2)
             .rightPodY(1)
             .strafePodX(1.5)
@@ -47,7 +55,12 @@ public class Constants {
                     RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD
             ));
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
+    public static PathConstraints pathConstraints = new PathConstraints(
+            0.99,
+            100,
+            1,
+            1
+    );
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RobotModes.TeleOps;
 
 
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.A1;
+import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.A2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.B2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.LSx1;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.LSy1;
@@ -10,6 +11,7 @@ import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.RSx1;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.RSy2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.RT2;
+import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.X2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.Y1;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
 //import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
@@ -73,6 +75,10 @@ public class SolversMegaProof extends OpMode {
 
         if (B2 == 2) {
             shooterSub.stop();
+        } else if (A2 == 1) {
+            shooterSub.shootClose();
+        } else if (X2 == 1) {
+            shooterSub.shootFar();
         } else {
             shooterSub.shoot(LT2 > .05 ? -LT2 : RT2);
         }
