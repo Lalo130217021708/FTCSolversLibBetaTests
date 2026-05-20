@@ -6,20 +6,31 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.ivy.behaviors.BlockedBehavior;
+import com.pedropathing.ivy.behaviors.ConflictBehavior;
+import com.pedropathing.ivy.behaviors.EndCondition;
+import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
+import com.pedropathing.paths.callbacks.ParametricCallback;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.pedro.PedroCommands.*;
 import static com.pedropathing.ivy.groups.Groups.*;
 
+import org.firstinspires.ftc.teamcode.Camera.Limelight;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
+
+import java.util.Collections;
+import java.util.Set;
 
 @Autonomous(name = "pedroPathingAuto", group = "Pedro Pathing")
 public class pedropathingProof extends OpMode {
     private Follower follower;
+    private Limelight limelight;
 
     private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180)); // Start Pose of our robot.
     private final Pose scorePose = new Pose(60, 85, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
@@ -55,6 +66,9 @@ public class pedropathingProof extends OpMode {
         scorePickup2 = follower.pathBuilder()
                 .addPath(new BezierLine(pickup2Pose, scorePose))
                 .setLinearHeadingInterpolation(pickup2Pose.getHeading(), scorePose.getHeading())
+                .addParametricCallback(20, ()-> {
+                    limelight.getLimeValues();
+                })
                 .build();
         /* This is our grabPickup3 PathChain. We are using a single path with a BezierLine, which is a straight line. */
         grabPickup3 = follower.pathBuilder()
@@ -69,7 +83,6 @@ public class pedropathingProof extends OpMode {
     }
 
     public void buildPaths(){
-        scorePreload.endPose();
     }
 
     public Command autoRoutine() {
@@ -79,6 +92,11 @@ public class pedropathingProof extends OpMode {
                 follow(follower, grabPickup1, true),
                 /* Grab Sample Command*/
                 follow(follower, scorePickup1, true),
+                /// Creation of Parallel functions ///
+                parallel(
+                        instant(()-> limelight.getLimeValues()),
+                        follow(follower, scorePickup1, true)
+                ),
                 /* Score Sample Command*/
                 follow(follower, grabPickup2, true),
                 /* Grab Sample Command*/

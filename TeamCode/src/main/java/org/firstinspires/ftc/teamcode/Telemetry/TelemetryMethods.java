@@ -14,7 +14,8 @@ import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.vel;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterCPR;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterPos;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterRate;
-import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shoterVel;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel2;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Camera.Limelight;
@@ -61,6 +62,7 @@ public class TelemetryMethods {
         telemetry.addData("Shooter CPR", shooterCPR);
         telemetry.addData("Shooter Pos", shooterPos);
         telemetry.addData("Shooter Rate", shooterRate);
-        telemetry.addData("Shooter Vel", shoterVel);
+        telemetry.addData("Shooter Vel", shooterVel);
+        telemetry.addData("Shooter Vel 2", shooterVel2);
     }
 }

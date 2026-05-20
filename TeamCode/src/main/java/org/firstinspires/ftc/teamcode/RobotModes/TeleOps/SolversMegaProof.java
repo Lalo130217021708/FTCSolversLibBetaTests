@@ -13,6 +13,7 @@ import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.RT2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.X2;
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.Y1;
+import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.Y2;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
 //import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.mecanumDriveSub;
@@ -73,14 +74,16 @@ public class SolversMegaProof extends OpMode {
             intakeFeederSub.feeder(RSy2);
         }
 
-        if (B2 == 2) {
+        if (B2 == 1) {
             shooterSub.stop();
+        } else if (Y2 == 1) {
+            shooterSub.shootRPMs();
         } else if (A2 == 1) {
-            shooterSub.shootClose();
+            shooterSub.shootSingleRight(3);
         } else if (X2 == 1) {
-            shooterSub.shootFar();
+            shooterSub.shootSingleLeft(3);
         } else {
-            shooterSub.shoot(LT2 > .05 ? -LT2 : RT2);
+            shooterSub.shootManually(LT2 > .05 ? -LT2 : RT2);
         }
     }
 
