@@ -13,7 +13,7 @@ public class SubsystemsInitializer {
     public static IntakeFeederSub intakeFeederSub;
     public static ShooterSub shooterSub;
     public static VoltageCompensator voltageCompensator;
-    //public static Limelight limelight;
+    public static Limelight limelight;
 
 
     public SubsystemsInitializer(HardwareMap hardwareMap){
@@ -21,7 +21,7 @@ public class SubsystemsInitializer {
         intakeFeederSub = new IntakeFeederSub(hardwareMap);
         shooterSub = new ShooterSub(hardwareMap);
         voltageCompensator = new VoltageCompensator(hardwareMap);
-        //limelight = new Limelight(hardwareMap);
+        limelight = new Limelight(hardwareMap);
     }
 
     public void absStop(){

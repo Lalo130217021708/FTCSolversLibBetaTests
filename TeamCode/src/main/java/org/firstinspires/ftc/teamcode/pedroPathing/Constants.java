@@ -1,8 +1,14 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.kD;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.kF;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.kI;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.kP;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
+import com.pedropathing.control.PredictiveBrakingCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -18,11 +24,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Constants {
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(11)
-            .headingPIDFCoefficients(new PIDFCoefficients(1.25, 0, 0, 0))
+            .forwardZeroPowerAcceleration(-24.530167827548517)
+            .lateralZeroPowerAcceleration(-45.1642393813147)
+            .headingPIDFCoefficients(new PIDFCoefficients(1.25, 3.2, 0.024, 0))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(.085, 0, 0, 0, 0))
-            .translationalPIDFCoefficients(new PIDFCoefficients(.15, 0, 0, 0))
-            .centripetalScaling(.1);
-
+            .centripetalScaling(.1)
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.1,0.0004,0.05,0));
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(.9)
             .xVelocity(63.29137079302875)

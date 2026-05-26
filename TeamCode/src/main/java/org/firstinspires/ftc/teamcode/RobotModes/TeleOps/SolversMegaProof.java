@@ -16,9 +16,13 @@ import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.
 import static org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer.Y2;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
 //import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
+import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.mecanumDriveSub;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.shooterSub;
+import static org.firstinspires.ftc.teamcode.pedroPathing.Constants.createFollower;
+import static org.firstinspires.ftc.teamcode.pedroPathing.Constants.followerConstants;
 
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -34,12 +38,15 @@ public class SolversMegaProof extends OpMode {
 
     public static boolean fieldCentric = false;
     public static boolean oncePressed = false;
+    Follower follower;
+    public static double kkp, kki, kkd, kkf;
 
     @Override
     public void init() {
         controllerInitializer = new ControllerInitializer(gamepad1, gamepad2);
         telemetryMethods = new TelemetryMethods(telemetry);
         subsystemsInitializer = new SubsystemsInitializer(hardwareMap);
+        follower = createFollower(hardwareMap);
     }
 
     @Override
@@ -50,11 +57,18 @@ public class SolversMegaProof extends OpMode {
     @Override
     public void loop() {
         controllerInitializer.actualizeGamepad();
-        //limelight.getLimeValues();
-        telemetryMethods.getRobotTelemetry();
+        limelight.getLimeValues();
+        limelight.getBotPose();
         mecanumDriveSub.getAllChassisValues();
         shooterSub.getGetters();
         telemetryMethods.getShooterValues();
+        kkp = followerConstants.getCoefficientsTranslationalPIDF().P;
+        kki = followerConstants.getCoefficientsTranslationalPIDF().I;
+        kkd = followerConstants.getCoefficientsTranslationalPIDF().D;
+        kkf = followerConstants.getCoefficientsTranslationalPIDF().F;
+
+        telemetryMethods.getRobotTelemetry();
+
 
 
         if (Y1 == 1) {

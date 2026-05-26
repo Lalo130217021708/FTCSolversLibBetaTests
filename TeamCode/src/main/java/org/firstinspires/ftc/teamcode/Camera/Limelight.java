@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Camera;
 
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.actualYaw;
 
+import static java.lang.Math.tan;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -19,8 +21,11 @@ public class Limelight {
     public static int tagCount;
     public static double StrafeDistance_3D;
     public static int id;
-    public static double x, y;
+    public static double x, y, distance, fidTY;
     LLResult result;
+
+    public static final double CAMERA_HEIGHT = 12.75;
+    public static final double GOAL_HEIGHT = 29.5;
 
 
     public Limelight(HardwareMap hardwareMap){
@@ -34,6 +39,7 @@ public class Limelight {
     public void getLimeValues(){
         getBotPose();
         getCameraBasicValues();
+        getDistanceToAt();
         getFiducialResults();
     }
 
@@ -68,6 +74,10 @@ public class Limelight {
         }
     }
 
+    public void getDistanceToAt(){
+        distance = (GOAL_HEIGHT - CAMERA_HEIGHT) / tan(Math.toRadians(fidTY + 20));
+    }
+
     public void getFiducialResults(){
         List<LLResultTypes.FiducialResult> fiducials = result.getFiducialResults();
         if (fiducials != null ) {
@@ -77,6 +87,7 @@ public class Limelight {
                     x = fiducial.getTargetXDegrees(); // Where it is (left-right)
                     y = fiducial.getTargetYDegrees(); // Where it is (up-down)
                     StrafeDistance_3D = fiducial.getRobotPoseTargetSpace().getPosition().y;
+                    fidTY = fiducial.getTargetYDegrees();
                 }
             } catch (Exception e) {
                 throw new RuntimeException("Oye Check This" + e.getMessage());

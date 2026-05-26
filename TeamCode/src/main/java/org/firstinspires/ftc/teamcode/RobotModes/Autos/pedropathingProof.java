@@ -41,7 +41,7 @@ public class pedropathingProof extends OpMode {
     private Path scorePreload;
     private PathChain grabPickup1, scorePickup1, grabPickup2, scorePickup2, grabPickup3, scorePickup3;
     private PathChain housePath1, housePath2, housePath3, housePath4, housePath5;
-    public void buildPathss() {
+    public void buildPaths() {
         /* This is our scorePreload path. We are using a BezierLine, which is a straight line. */
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
@@ -80,9 +80,6 @@ public class pedropathingProof extends OpMode {
                 .addPath(new BezierLine(pickup3Pose, scorePose))
                 .setLinearHeadingInterpolation(pickup3Pose.getHeading(), scorePose.getHeading())
                 .build();
-    }
-
-    public void buildPaths(){
     }
 
     public Command autoRoutine() {

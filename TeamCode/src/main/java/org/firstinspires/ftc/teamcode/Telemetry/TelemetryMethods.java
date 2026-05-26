@@ -1,13 +1,22 @@
 package org.firstinspires.ftc.teamcode.Telemetry;
 
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.StrafeDistance_3D;
+import static org.firstinspires.ftc.teamcode.Camera.Limelight.distance;
+import static org.firstinspires.ftc.teamcode.Camera.Limelight.fidTY;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.ta;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.tagCount;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.tx;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.ty;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.x;
+import static org.firstinspires.ftc.teamcode.Camera.Limelight.xBotPose;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.y;
+import static org.firstinspires.ftc.teamcode.Camera.Limelight.yBotPose;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
 import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof.fieldCentric;
+import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof.kkd;
+import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof.kkf;
+import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof.kki;
+import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof.kkp;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.actualYaw;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.pos;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.vel;
@@ -26,16 +35,16 @@ public class TelemetryMethods {
         this.telemetry = telemetry;
     }
     public void getRobotTelemetry() {
-        //getChassisTelemetry();
-        getOdometryTelemetry();
         getLimelightValues();
-        getLimelight();
+    }
+
+    public void getTel(){
+        telemetry.addData("P", kkp);
+        telemetry.addData("I", kki);
+        telemetry.addData("D", kkd);
+        telemetry.addData("F", kkf);
     }
     public void getChassisTelemetry(){
-        telemetry.addData("FLVel", vel[0]);
-        telemetry.addData("FRVel", vel[1]);
-        telemetry.addData("RLVel", vel[2]);
-        telemetry.addData("RRVel", vel[3]);
         telemetry.addData("Heading" ,actualYaw);
         telemetry.addData("FieldCentric", fieldCentric);
     }
@@ -50,6 +59,8 @@ public class TelemetryMethods {
         telemetry.addData("ty", ty);
         telemetry.addData("ta", ta);
         telemetry.addData("tagCount", tagCount);
+        telemetry.addData("distance to Goal", distance);
+        telemetry.addData("fidTY", fidTY);
     }
 
     public void getLimelight(){
@@ -57,6 +68,12 @@ public class TelemetryMethods {
         telemetry.addData("x Distance Relative Tag", x);
         telemetry.addData("y Distance Relative Tag", y);
         telemetry.addData("Tag Id", Limelight.id);
+
+    }
+
+    public void getBotPose(){
+        telemetry.addData("X Bot Pose", xBotPose);
+        telemetry.addData("Y Bot Pose", yBotPose);
     }
     public void getShooterValues(){
         telemetry.addData("Shooter CPR", shooterCPR);
@@ -64,5 +81,6 @@ public class TelemetryMethods {
         telemetry.addData("Shooter Rate", shooterRate);
         telemetry.addData("Shooter Vel", shooterVel);
         telemetry.addData("Shooter Vel 2", shooterVel2);
+        telemetry.addData("rpms", configurableRPMs);
     }
 }

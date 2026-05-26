@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurablePower;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.d;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.f;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.i;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.p;
 import static org.firstinspires.ftc.teamcode.ControlSystems.VoltageCompensator.compensateVoltage;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -32,8 +37,7 @@ public class ShooterSub {
 
         interpLUT = new InterpLUT();
 
-        pidfCoefficients = new PIDFCoefficients(2, 0, 0, .9);
-        pid = new PIDFController(pidfCoefficients);
+        pidfCoefficients = new PIDFCoefficients(0.00065, 0.95, 0.005, 0.000197);
     }
     /// Shooter Functions ///
     public void shootSingleRight(double power){
@@ -41,8 +45,10 @@ public class ShooterSub {
     }
     public void shootSingleLeft(double power){shooterMotor2.set(power);}
     public void configShoot(){shooterMotors.set(configurablePower);}
-    public void shootRPMs(){shooterMotor.set(pid.calculate(getShooterVel(), 6000));
-    shooterMotor2.set(pid.calculate(getShooterVel2(), 6000));}
+    public void shootRPMs(){
+        pid = new PIDFController(p, i , d, f);
+        shooterMotors.set(pid.calculate(shooterVel, configurableRPMs));
+    }
     public void shootManually(double power){shooterMotors.set(power);}
     public void stop(){shooterMotors.set(0);}
 
@@ -51,11 +57,11 @@ public class ShooterSub {
     public void getShooterPos(){shooterPos = shooterMotor.getCurrentPosition() / shooterMotor.getCPR();}
     public void getShooterRate(){shooterRate = shooterMotor.getRate();}
     public double getShooterVel(){
-        shooterVel = shooterMotor.getRate() * shooterMotor.getCPR() * .006;
+        shooterVel = shooterMotor.getVelocity()/28 * 60;
         return shooterVel;
     }
     public double getShooterVel2(){
-        shooterVel2 = shooterMotor2.getVelocity();
+        shooterVel2 = shooterMotor2.getVelocity()/28 * 60;
         return shooterVel2;
     }
     public void getGetters(){
