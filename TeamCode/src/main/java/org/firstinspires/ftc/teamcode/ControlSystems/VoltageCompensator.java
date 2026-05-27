@@ -4,17 +4,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 public class VoltageCompensator {
-    public static VoltageSensor voltageSensor;
+    public VoltageSensor voltageSensor;
 
     public VoltageCompensator(HardwareMap hardwareMap){
-        voltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
+        voltageSensor = hardwareMap.get(VoltageSensor.class, "Expansion Hub 2");
     }
 
-    public static double getVoltage(){
+    public double getVoltage(){
         return voltageSensor.getVoltage();
     }
 
-    public static double compensateVoltage( double output){
+    public double compensateVoltage( double output){
         return output * (12.4 / getVoltage());
     }
 }

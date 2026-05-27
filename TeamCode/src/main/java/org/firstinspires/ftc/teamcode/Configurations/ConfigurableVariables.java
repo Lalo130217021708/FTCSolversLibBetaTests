@@ -7,7 +7,7 @@ public class ConfigurableVariables {
     public static class shooterConfigurableVariables{
         public static double configurablePower = .65;
         public static double configurableRPMs = 4000;
-        public static double p = .5;
+        public static double p = .0;
         public static double i = 0;
         public static double d = 0;
         public static double f = 0;

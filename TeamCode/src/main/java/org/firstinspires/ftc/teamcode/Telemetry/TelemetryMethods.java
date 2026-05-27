@@ -20,6 +20,7 @@ import static org.firstinspires.ftc.teamcode.RobotModes.TeleOps.SolversMegaProof
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.actualYaw;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.pos;
 import static org.firstinspires.ftc.teamcode.Subsystems.MecanumDriveSub.vel;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.interpLUT;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterCPR;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterPos;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterRate;
@@ -61,6 +62,7 @@ public class TelemetryMethods {
         telemetry.addData("tagCount", tagCount);
         telemetry.addData("distance to Goal", distance);
         telemetry.addData("fidTY", fidTY);
+        telemetry.addData("intplut", interpLUT.get(distance));
     }
 
     public void getLimelight(){

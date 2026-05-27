@@ -66,6 +66,7 @@ public class SolversMegaProof extends OpMode {
         kki = followerConstants.getCoefficientsTranslationalPIDF().I;
         kkd = followerConstants.getCoefficientsTranslationalPIDF().D;
         kkf = followerConstants.getCoefficientsTranslationalPIDF().F;
+        shooterSub.getInterpLUT();
 
         telemetryMethods.getRobotTelemetry();
 

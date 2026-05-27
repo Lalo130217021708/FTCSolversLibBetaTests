@@ -19,8 +19,8 @@ public class SubsystemsInitializer {
     public SubsystemsInitializer(HardwareMap hardwareMap){
         mecanumDriveSub = new MecanumDriveSub(hardwareMap);
         intakeFeederSub = new IntakeFeederSub(hardwareMap);
-        shooterSub = new ShooterSub(hardwareMap);
         voltageCompensator = new VoltageCompensator(hardwareMap);
+        shooterSub = new ShooterSub(hardwareMap, voltageCompensator);
         limelight = new Limelight(hardwareMap);
     }
 
