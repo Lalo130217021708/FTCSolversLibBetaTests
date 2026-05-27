@@ -53,7 +53,6 @@ public class ShooterSub {
         shooterMotor.set(power);
     }
     public void shootSingleLeft(double power){shooterMotor2.set(power);}
-    public void configShoot(){shooterMotors.set(configurablePower);}
     public void shootRPMs(){
         pid = new PIDFController(.00215, 1.25, .1, voltageCompensator.compensateVoltage(.000177));
         shooterMotors.set(pid.calculate(shooterVel, value));
