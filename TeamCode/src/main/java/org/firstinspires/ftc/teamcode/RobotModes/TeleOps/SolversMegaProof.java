@@ -71,12 +71,8 @@ public class SolversMegaProof extends OpMode {
         telemetryMethods.getRobotTelemetry();
 
 
-
-        if (Y1 == 1) {
-            fieldCentric = !oncePressed ? !fieldCentric : fieldCentric;
-            oncePressed = true;
-        } else if (A1 == 1) {
-            mecanumDriveSub.aprilTagTracking(LSx1, LSy1);
+        if (A1 == 1) {
+            mecanumDriveSub.aprilTagTracking(fieldCentric, LSx1, LSy1);
         } else {
             mecanumDriveSub.driveRobot(fieldCentric, LSx1, LSy1, RSx1);
             oncePressed = false;
@@ -92,7 +88,7 @@ public class SolversMegaProof extends OpMode {
         if (B2 == 1) {
             shooterSub.stop();
         } else if (Y2 == 1) {
-            shooterSub.shootRPMs();
+            subsystemsInitializer.AutomizedShooting();
         } else if (A2 == 1) {
             shooterSub.shootSingleRight(3);
         } else if (X2 == 1) {

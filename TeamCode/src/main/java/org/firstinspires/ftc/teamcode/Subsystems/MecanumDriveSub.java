@@ -45,7 +45,6 @@ public class MecanumDriveSub {
     /// PIDFControllers and Coefficients Creators
     PIDFController yawController;
     PIDFCoefficients pidfYawCoefficients;
-    PIDFController secondaryAprilTagController;
     PIDFCoefficients secondaryPIDFAtCoefficients;
     PIDFController aprilTagController;
     PIDFCoefficients pidfAtCoefficients;
@@ -88,8 +87,6 @@ public class MecanumDriveSub {
         aprilTagController = new PIDFController(pidfAtCoefficients);
         aprilTagController.setTolerance(.25);
 
-        secondaryAprilTagController = new PIDFController(pidfAtCoefficients);
-        secondaryAprilTagController.setTolerance(.1);
     }
 
 
@@ -113,17 +110,7 @@ public class MecanumDriveSub {
         rearRightMotor.set(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
     }
     public void driveRobotPOV(double xInput, double yInput, double zInput){
-        if(zInput == 0){
-            if(!onceSaved){
-                savedYaw = actualYaw;
-                onceSaved = true;
-            }
-            zOutput = yawController.calculate(actualYaw ,savedYaw);
-        } else {
-            zOutput = zInput;
-            onceSaved = false;
-        }
-        mecanumDrive.driveRobotCentric(xInput, yInput, zOutput);
+        mecanumDrive.driveRobotCentric(xInput, yInput, zInput);
     }
     public void driveRobot(boolean fieldCentric, double xInput, double yInput, double zInput){
         if (fieldCentric) {
@@ -132,10 +119,9 @@ public class MecanumDriveSub {
             driveRobotPOV(-xInput, yInput, -zInput);
         }
     }
-    public void aprilTagTracking(double xInput, double yInput){
-        double error = Math.abs(0 - tx);
-        double zCalculations = error < 4 ? secondaryAprilTagController.calculate(tx, 0) : aprilTagController.calculate(tx, 0);
-        driveDriverPOV(xInput, yInput, -zCalculations);
+    public void aprilTagTracking(boolean field, double xInput, double yInput){
+        double zCalculations = aprilTagController.calculate(tx, 0);
+        driveRobot(field, xInput, -yInput, zCalculations);
     }
     public void stopMotors(){
         frontLeftMotor.set(0);

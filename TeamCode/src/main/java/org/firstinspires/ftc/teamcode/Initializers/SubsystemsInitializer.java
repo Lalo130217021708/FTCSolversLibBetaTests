@@ -29,4 +29,13 @@ public class SubsystemsInitializer {
         intakeFeederSub.stop();
     }
 
+    public void AutomizedShooting(){
+        shooterSub.shootRPMs();
+        if (Math.abs(shooterSub.desiredRPMS - shooterSub.getShooterVel()) > 100 ){
+            intakeFeederSub.intake(1);
+            intakeFeederSub.feeder(1);
+            shooterSub.shootRPMs();
+        }
+    }
+
 }
