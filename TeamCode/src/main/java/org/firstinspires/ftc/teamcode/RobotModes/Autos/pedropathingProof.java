@@ -6,13 +6,8 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
-import com.pedropathing.ivy.behaviors.BlockedBehavior;
-import com.pedropathing.ivy.behaviors.ConflictBehavior;
-import com.pedropathing.ivy.behaviors.EndCondition;
-import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
-import com.pedropathing.paths.callbacks.ParametricCallback;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -23,9 +18,6 @@ import static com.pedropathing.ivy.groups.Groups.*;
 
 import org.firstinspires.ftc.teamcode.Camera.Limelight;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-
-import java.util.Collections;
-import java.util.Set;
 
 @Autonomous(name = "pedroPathingAuto", group = "Pedro Pathing")
 public class pedropathingProof extends OpMode {

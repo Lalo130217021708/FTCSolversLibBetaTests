@@ -10,8 +10,8 @@ public class IntakeFeederSub {
     public IntakeFeederSub(HardwareMap hardwareMap) {
         intakeMotor = new Motor(hardwareMap, "intakeMotor");
         feederMotor = new Motor(hardwareMap, "feederMotor");
-        intakeMotor.setInverted(true);
-        feederMotor.setInverted(true);
+        intakeMotor.setInverted(false);
+        feederMotor.setInverted(false);
         intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         feederMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
     }
@@ -23,7 +23,7 @@ public class IntakeFeederSub {
         feederMotor.set(power);
     }
     public void stop(){
-        intakeMotor.set(0);
-        feederMotor.set(0);
+        intakeMotor.set(.1);
+        feederMotor.set(.1);
     }
 }

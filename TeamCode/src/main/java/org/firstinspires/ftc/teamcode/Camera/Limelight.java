@@ -27,6 +27,12 @@ public class Limelight {
     public static final double CAMERA_HEIGHT = 12.75;
     public static final double GOAL_HEIGHT = 29.5;
 
+    private final double X_GOAL_POSE = -74;
+
+    private final double y_GOAL_POSE = -74;
+
+    private double tan, xPose, yPose;
+
 
     public Limelight(HardwareMap hardwareMap){
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -47,10 +53,10 @@ public class Limelight {
         result = limelight.getLatestResult();
         limelight.updateRobotOrientation(actualYaw);
         if(result != null && result.isValid()){
-            Pose3D mt2 = result.getBotpose_MT2();
-            if(mt2 != null){
-                xBotPose = mt2.getPosition().x;
-                yBotPose = mt2.getPosition().y;
+            Pose3D mt1 = result.getBotpose();
+            if(mt1 != null){
+                xBotPose = mt1.getPosition().x / .0254;
+                yBotPose = mt1.getPosition().y / .0254;
             }
 
         } else {
@@ -88,6 +94,7 @@ public class Limelight {
                     y = fiducial.getTargetYDegrees(); // Where it is (up-down)
                     StrafeDistance_3D = fiducial.getRobotPoseTargetSpace().getPosition().y;
                     fidTY = fiducial.getTargetYDegrees();
+
                 }
             } catch (Exception e) {
                 throw new RuntimeException("Oye Check This" + e.getMessage());
@@ -98,6 +105,15 @@ public class Limelight {
             y = 0;
             StrafeDistance_3D = 0;
         }
+    }
+
+    public double getGoalSetPoint(){
+        xPose = X_GOAL_POSE - xBotPose;
+        yPose = y_GOAL_POSE - yBotPose;
+
+        tan = xPose/yPose;
+        return Math.atan(tan);
+
     }
 
 }
