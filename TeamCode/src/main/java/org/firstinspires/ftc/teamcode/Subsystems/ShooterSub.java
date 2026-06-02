@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.distance;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.d;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.f;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.i;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.p;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.controller.PIDFController;
@@ -35,11 +40,11 @@ public class ShooterSub {
     }
     /// Shooter Functions ///
     public void shootRPMs(){
-        PIDFController pid = new PIDFController(.00215, 1.25, .1, voltageCompensator.compensateVoltage(.000177));
-        shooterMotors.set(pid.calculate(shooterVel, desiredRPMs));
+        PIDFController pid = new PIDFController(p, i, d, voltageCompensator.compensateVoltage(f));
+        shooterMotors.set(pid.calculate(shooterVel, configurableRPMs));
     }
     public void shootManually(double power){shooterMotors.set(power);}
-    public void stop(){shooterMotors.set(0);}
+    public void stop(){shooterMotors.set(.4);}
 
     /// Shooter Getters
     public void getRPMsError(){

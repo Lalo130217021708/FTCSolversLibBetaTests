@@ -23,7 +23,7 @@ public class IntakeFeederSub {
         feederMotor.set(power);
     }
     public void stop(){
-        intakeMotor.set(.1);
-        feederMotor.set(.1);
+        intakeMotor.set(0);
+        feederMotor.set(0);
     }
 }
