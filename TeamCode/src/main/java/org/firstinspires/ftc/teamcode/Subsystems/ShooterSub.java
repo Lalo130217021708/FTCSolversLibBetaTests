@@ -41,7 +41,7 @@ public class ShooterSub {
     /// Shooter Functions ///
     public void shootRPMs(){
         PIDFController pid = new PIDFController(p, i, d, voltageCompensator.compensateVoltage(f));
-        shooterMotors.set(pid.calculate(shooterVel, configurableRPMs));
+        shooterMotors.set(pid.calculate(shooterVel, desiredRPMs));
     }
     public void shootManually(double power){shooterMotors.set(power);}
     public void stop(){shooterMotors.set(.4);}
@@ -75,13 +75,24 @@ public class ShooterSub {
     /// Setters ///
     public void setInterpLUTValues(){
         interpLUT.add(0, 3085);
-        interpLUT.add(27.2, 3085);
-        interpLUT.add(45.3, 3195);
-        interpLUT.add(77.94, 3625);
-        interpLUT.add(86.5, 3800);
-        interpLUT.add(111.85, 4227);
-        interpLUT.add(116.1, 4327);
-        interpLUT.add(136.1, 4514);
+        interpLUT.add(25, 3085);
+        interpLUT.add(30, 3170);
+        interpLUT.add(35, 3270);
+        interpLUT.add(40, 3370);
+        interpLUT.add(45, 3470);
+        interpLUT.add(50, 3550);
+        interpLUT.add(55, 3650);
+        interpLUT.add(60, 3750);
+        interpLUT.add(65, 3820);
+        interpLUT.add(70, 3920);
+        interpLUT.add(75, 3930);
+        interpLUT.add(80, 3945);
+        interpLUT.add(85, 3985);
+        interpLUT.add(90, 4040);
+        interpLUT.add(95, 4120);
+        interpLUT.add(100, 4250);
+        interpLUT.add(105, 4300);
+        interpLUT.add(110, 4370);
 
         interpLUT.createLUT();
     }
