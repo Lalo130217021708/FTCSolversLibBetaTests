@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Initializers;
 
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.interpLUT;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.rpmsError;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -34,12 +35,12 @@ public class SubsystemsInitializer {
     }
      public void automatizedShoot(){
         shooterSub.shootRPMs();
-        if (Math.abs(rpmsError - shooterSub.getShooterVel()) < 25) {
+        if (Math.abs(rpmsError) < 35) {
             intakeFeederSub.intake(1);
             intakeFeederSub.feeder(1);
         } else {
              intakeFeederSub.stop();
-         }
+        }
      }
 
 }
