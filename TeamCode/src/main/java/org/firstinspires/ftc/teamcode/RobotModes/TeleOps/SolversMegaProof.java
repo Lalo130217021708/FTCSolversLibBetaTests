@@ -15,6 +15,7 @@ import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.limelight;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.mecanumDriveSub;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.onceSaved;
+import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.once;
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.shooterSub;
 import static org.firstinspires.ftc.teamcode.pedroPathing.Constants.createFollower;
 
@@ -79,6 +80,7 @@ public class SolversMegaProof extends OpMode {
         } else if (Y2 == 1) {
             subsystemsInitializer.automatizedShoot();
         } else {
+            once = false;
             onceSaved = false;
             shooterSub.shootManually(LT2 > .05 ? -LT2 : RT2);
         }

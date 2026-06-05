@@ -1,7 +1,15 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.behaviors.BlockedBehavior;
+import com.pedropathing.ivy.behaviors.ConflictBehavior;
+import com.pedropathing.ivy.behaviors.EndCondition;
+import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
+
+import java.util.Collections;
+import java.util.Set;
 
 public class IntakeFeederSub {
     private final Motor intakeMotor;
@@ -22,8 +30,63 @@ public class IntakeFeederSub {
     public void feeder(double power) {
         feederMotor.set(power);
     }
-    public void stop(){
-        intakeMotor.set(0);
-        feederMotor.set(0);
+
+    public void moveContinuously(){
+        intakeMotor.set(.70);
+        feederMotor.set(.85);
     }
+    public void stop(){
+        intakeMotor.set(0.55);
+        feederMotor.set(0.55);
+    }
+    public Command intakeFeederCdm = new Command() {
+
+        @Override
+        public Set<Object> requirements() {
+            return Collections.emptySet();
+        }
+
+        @Override
+        public int priority() {
+            return 0;
+        }
+
+        @Override
+        public InterruptedBehavior interruptedBehavior() {
+            return null;
+        }
+
+        @Override
+        public ConflictBehavior conflictBehavior() {
+            return null;
+        }
+
+        @Override
+        public BlockedBehavior blockedBehavior() {
+            return null;
+        }
+
+        @Override
+        public void start() {
+
+        }
+
+        @Override
+        public boolean done() {
+            return false;
+        }
+
+        @Override
+        public void execute() {
+            intake(1);
+            feeder(.55);
+        }
+
+        @Override
+        public void end(EndCondition endCondition) {
+            intake(0);
+            feeder(0);
+        }
+    };
+
 }

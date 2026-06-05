@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Initializers;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.interpLUT;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.rpmsError;
+import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -19,6 +20,7 @@ public class SubsystemsInitializer {
     public static VoltageCompensator voltageCompensator;
     public static Limelight limelight;
     public static boolean onceSaved = false;
+    public static boolean once = false;
 
     public SubsystemsInitializer(HardwareMap hardwareMap){
         intakeFeederSub = new IntakeFeederSub(hardwareMap);
@@ -35,11 +37,13 @@ public class SubsystemsInitializer {
     }
      public void automatizedShoot(){
         shooterSub.shootRPMs();
-        if (Math.abs(rpmsError) < 35) {
+        if (Math.abs(configurableRPMs-shooterVel) < 50) {
             intakeFeederSub.intake(1);
             intakeFeederSub.feeder(1);
+            once = true;
         } else {
-             intakeFeederSub.stop();
+            intakeFeederSub.intake(0.55);
+            intakeFeederSub.feeder(0.55);
         }
      }
 

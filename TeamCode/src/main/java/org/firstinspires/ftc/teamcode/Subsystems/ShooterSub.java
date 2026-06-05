@@ -3,9 +3,13 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.distance;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.d;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.dShooter;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.f;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.fShooter;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.i;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.iShooter;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.p;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.pShooter;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.controller.PIDFController;
@@ -40,8 +44,8 @@ public class ShooterSub {
     }
     /// Shooter Functions ///
     public void shootRPMs(){
-        PIDFController pid = new PIDFController(p, i, d, voltageCompensator.compensateVoltage(f));
-        shooterMotors.set(pid.calculate(shooterVel, desiredRPMs));
+        PIDFController pid = new PIDFController(pShooter, iShooter, dShooter, voltageCompensator.compensateVoltage(fShooter));
+        shooterMotors.set(pid.calculate(shooterVel, configurableRPMs));
     }
     public void shootManually(double power){shooterMotors.set(power);}
     public void stop(){shooterMotors.set(.4);}
@@ -74,25 +78,12 @@ public class ShooterSub {
 
     /// Setters ///
     public void setInterpLUTValues(){
-        interpLUT.add(0, 3085);
-        interpLUT.add(25, 3085);
-        interpLUT.add(30, 3170);
-        interpLUT.add(35, 3270);
-        interpLUT.add(40, 3370);
-        interpLUT.add(45, 3470);
-        interpLUT.add(50, 3550);
-        interpLUT.add(55, 3650);
-        interpLUT.add(60, 3750);
-        interpLUT.add(65, 3820);
-        interpLUT.add(70, 3920);
-        interpLUT.add(75, 3930);
-        interpLUT.add(80, 3945);
-        interpLUT.add(85, 3985);
-        interpLUT.add(90, 4040);
-        interpLUT.add(95, 4120);
-        interpLUT.add(100, 4250);
-        interpLUT.add(105, 4300);
-        interpLUT.add(110, 4370);
+        interpLUT.add(0, 3150);
+        interpLUT.add(25, 3150);
+        interpLUT.add(35, 3350);
+        interpLUT.add(45, 3475);
+        interpLUT.add(55, 3625);
+        interpLUT.add(65, 3700);
 
         interpLUT.createLUT();
     }
