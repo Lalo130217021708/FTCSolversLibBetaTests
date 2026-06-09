@@ -82,7 +82,6 @@ public class SolversMegaProof extends OpMode {
             intakeFeederSub.intake(-LSy2);
             intakeFeederSub.feeder(-RSy2);
         }
-
         if (B2 == 1) {
             shooterSub.stop();
         } else if (Y2 == 1) {
