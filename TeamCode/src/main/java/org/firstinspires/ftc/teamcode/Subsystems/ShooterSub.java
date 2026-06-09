@@ -1,18 +1,15 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.distance;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.d;
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.DesiredRPMs;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.dShooter;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.f;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.fShooter;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.i;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.iShooter;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.p;
 import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.pShooter;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.controller.PIDFController;
+import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
 import com.seattlesolvers.solverslib.hardware.motors.MotorGroup;
 import com.seattlesolvers.solverslib.util.InterpLUT;
@@ -34,6 +31,7 @@ public class ShooterSub {
         shooterMotor2 = new MotorEx(hardwareMap, "shooterMotor2");
         shooterMotor2.setInverted(true);
         shooterMotor2.setZeroPowerBehavior(MotorEx.ZeroPowerBehavior.BRAKE);
+        shooterMotor2.setRunMode(Motor.RunMode.RawPower);
 
         shooterMotors = new MotorGroup(shooterMotor, shooterMotor2);
 
@@ -45,7 +43,7 @@ public class ShooterSub {
     /// Shooter Functions ///
     public void shootRPMs(){
         PIDFController pid = new PIDFController(pShooter, iShooter, dShooter, voltageCompensator.compensateVoltage(fShooter));
-        shooterMotors.set(pid.calculate(shooterVel, configurableRPMs));
+        shooterMotors.set(pid.calculate(shooterVel, DesiredRPMs));
     }
     public void shootManually(double power){shooterMotors.set(power);}
     public void stop(){shooterMotors.set(.4);}
@@ -57,6 +55,11 @@ public class ShooterSub {
     public void getShooterMotorCPR(){shooterCPR = shooterMotor.getCPR();}
     public void getShooterPos(){shooterPos = shooterMotor.getCurrentPosition() / shooterMotor.getCPR();}
     public void getShooterRate(){shooterRate = shooterMotor.getRate();}
+
+    public void mantainShooter(){
+        PIDFController pid = new PIDFController(pShooter, iShooter, dShooter, voltageCompensator.compensateVoltage(fShooter));
+        shooterMotors.set(pid.calculate(shooterVel, 2300));
+    }
     public double getShooterVel(){
         shooterVel = shooterMotor.getVelocity()/28 * 60;
         return shooterVel;

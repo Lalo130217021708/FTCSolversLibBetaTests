@@ -18,7 +18,7 @@ public class IntakeFeederSub {
     public IntakeFeederSub(HardwareMap hardwareMap) {
         intakeMotor = new Motor(hardwareMap, "intakeMotor");
         feederMotor = new Motor(hardwareMap, "feederMotor");
-        intakeMotor.setInverted(false);
+        intakeMotor.setInverted(true);
         feederMotor.setInverted(false);
         intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         feederMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);

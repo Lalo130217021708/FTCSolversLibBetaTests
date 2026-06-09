@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Telemetry;
 
+import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.DesiredRPMs;
+import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -14,6 +17,8 @@ public class Dashboard {
     public static TelemetryPacket packet;
     
     ElapsedTime timer;
+
+    ElapsedTime timer2;
     double finalTime;
 
     ShooterSub shooterSub;
@@ -21,12 +26,16 @@ public class Dashboard {
     
     boolean isStable;
 
+    double time;
+
     // Variables para el tiempo de ciclo
     private int ballCount = 0;
     private boolean isshooting = false;
     private double cycleStartTime = 0;
     private double lastCycleTime = 0;
     private static final double RPM_DROP = 150;
+    private boolean onceSaved = false;
+    private boolean onceReseted = false;
 
     public Dashboard(){
         packet = new TelemetryPacket(false);
@@ -39,21 +48,19 @@ public class Dashboard {
     }
     
     public void getStabilizationTime (){
-        double time;
-        while (shooterSub.desiredRPMs < shooterSub.getShooterVel()) {
-            isStable = false;
-            time = timer.seconds();
-            packet.put("Stabilization Time", time);
-            ftcDashboard.sendTelemetryPacket(packet);
-        } 
-        isStable = true;
-        finalTime = timer.seconds();
-        packet.put("Final Time", finalTime);
+
+        //if (shooterSub.getShooterVel() - 100 < 2200 ||  shooterSub.getShooterVel() + 100 < 2300 ||
+
+
+        ftcDashboard.sendTelemetryPacket(packet);
+
     }
     public void getterShooter(){
-        packet.put("Desired Revs", shooterSub.desiredRPMs);
+        packet.put("Desired Revs", DesiredRPMs);
         packet.put("Actual Revs", shooterSub.shooterVel);
         packet.put("RPMs Error", shooterSub.rpmsError);
+
+        ftcDashboard.sendTelemetryPacket(packet);
     }
     
     public void getChassisVel(){
@@ -85,6 +92,12 @@ public class Dashboard {
 
         packet.put("Pelotas detectadas", ballCount);
         packet.put("Tiempo de Ciclo", lastCycleTime);
+        ftcDashboard.sendTelemetryPacket(packet);
+    }
+
+
+    public void printpene (double pene){
+        packet.put("Time", pene);
         ftcDashboard.sendTelemetryPacket(packet);
     }
 }
