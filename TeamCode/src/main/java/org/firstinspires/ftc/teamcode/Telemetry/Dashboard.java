@@ -50,7 +50,6 @@ public class Dashboard {
         finalTime = timer.seconds();
         packet.put("Final Time", finalTime);
     }
-    
     public void getterShooter(){
         packet.put("Desired Revs", shooterSub.desiredRPMs);
         packet.put("Actual Revs", shooterSub.shooterVel);
