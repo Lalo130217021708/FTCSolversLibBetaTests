@@ -17,17 +17,21 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @Config
 public class Constants {
+
+    public static double brakingStrenght = .2;
+    public static double brakingStart = .175;
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(14)
             .forwardZeroPowerAcceleration(-24.530167827548517)
             .lateralZeroPowerAcceleration(-45.1642393813147)
-            .headingPIDFCoefficients(new PIDFCoefficients(1.25, 3.2, 0.024, 0))
-            .predictiveBrakingCoefficients(new PredictiveBrakingCoefficients(.4, 0.1622856266443289, .0005646220209877093).withMaximumBrakingPower(1.6))
-            .centripetalScaling(0);
+            .headingPIDFCoefficients(new PIDFCoefficients(1.25, 2.5, 0.05, 0.003))
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.6125,0,0.025,0))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(.015,.00,.00,0,0))
+            .centripetalScaling(.0005);
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(.9)
-            .xVelocity(63.29137079302875)
-            .yVelocity(50.501498426854305)
+            .xVelocity(58.536941950990276)
+            .yVelocity(43.88946861258117)
             .rightFrontMotorName("frontRight")
             .rightRearMotorName("rearRight")
             .leftFrontMotorName("frontLeft")
@@ -40,10 +44,10 @@ public class Constants {
     public static ThreeWheelIMUConstants localizerConstants = new ThreeWheelIMUConstants()
             .forwardTicksToInches(0.00296843400339)
             .strafeTicksToInches(0.00296843400339)
-            .turnTicksToInches(0.00296843400339)
-            .leftPodY(2)
-            .rightPodY(1)
-            .strafePodX(1.5)
+            .turnTicksToInches(-.00296843400339)
+            .strafePodX(-5.7)
+            .leftPodY(8)
+            .rightPodY(-8)
             .leftEncoder_HardwareMapName("frontLeft")
             .rightEncoder_HardwareMapName("frontRight")
             .strafeEncoder_HardwareMapName("rearLeft")
@@ -59,8 +63,8 @@ public class Constants {
     public static PathConstraints pathConstraints = new PathConstraints(
             0.99,
             100,
-            1,
-            1
+            brakingStrenght,
+            brakingStart
     );
 
     public static Follower createFollower(HardwareMap hardwareMap) {
@@ -69,5 +73,9 @@ public class Constants {
                 .mecanumDrivetrain(driveConstants)
                 .threeWheelIMULocalizer(localizerConstants)
                 .build();
+    }
+
+    public static double getBrakingStrenght(){
+        return pathConstraints.getBrakingStrength();
     }
 }

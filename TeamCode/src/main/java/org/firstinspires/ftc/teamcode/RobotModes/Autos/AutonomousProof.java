@@ -20,12 +20,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 @Autonomous(name = "Squirt", group = "Tests")
 public class AutonomousProof extends LinearOpMode {
     private Follower follower;
-    private final Pose startPose = new Pose(0,0,Math.toRadians(90));
-    private final Pose topLPose = new Pose(40,0,Math.toRadians(90));
-    private final Pose topRPose = new Pose(40,40,Math.toRadians(90));
-    private final Pose rearRightPose = new Pose(0,40,Math.toRadians(90));
-    private final Pose endPose = new Pose(0,0,Math.toRadians(90));
-    private PathChain firstLine, secondLine, thirdLine, fourthLine;
+    private final Pose startPose = new Pose(30,25,Math.toRadians(90));
+    private PathChain MainChain, Chain2, Chain3, Chain4;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,30 +45,54 @@ public class AutonomousProof extends LinearOpMode {
     }
 
     public void buildPaths(){
-        firstLine = follower.pathBuilder()
-                    .addPath(new BezierLine(startPose, topLPose))
-                    .setLinearHeadingInterpolation(startPose.getHeading(), topLPose.getHeading())
-                    .build();
-        secondLine = follower.pathBuilder()
-                .addPath(new BezierLine(topLPose, topRPose))
-                .setLinearHeadingInterpolation(topLPose.getHeading(), topRPose.getHeading())
+        MainChain = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(30.000, 25.000),
+                                new Pose(30.000, 78.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(90))
                 .build();
-        thirdLine = follower.pathBuilder()
-                .addPath(new BezierLine(topRPose, rearRightPose))
-                .setLinearHeadingInterpolation(topRPose.getHeading(), rearRightPose.getHeading())
+
+        Chain2 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(30.000, 78.000),
+                                new Pose(110.000, 78.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
                 .build();
-        fourthLine = follower.pathBuilder()
-                .addPath(new BezierLine(rearRightPose, endPose))
-                .setLinearHeadingInterpolation(rearRightPose.getHeading(), endPose.getHeading())
+
+        Chain3 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(110.000, 78.000),
+                                new Pose(110.000, 25.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(270))
                 .build();
+
+        Chain4 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(110.000, 25.000),
+                                new Pose(30.000, 25.000)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(180))
+                .build();
+
     }
 
     public Command routine(){
         return sequential(
-                follow(follower, firstLine),
-                follow(follower, secondLine),
-                follow(follower, thirdLine),
-                follow(follower, fourthLine),
+                follow(follower, MainChain),
+                follow(follower, Chain2),
+                follow(follower, Chain3),
+                follow(follower, Chain4),
                 instant(this::terminateOpModeNow)
         );
     }

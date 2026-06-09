@@ -15,21 +15,27 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.pedro.PedroCommands.*;
 import static com.pedropathing.ivy.groups.Groups.*;
 
+import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
+import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.shooterSub;
+
+import org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer;
 import org.firstinspires.ftc.teamcode.Subsystems.IntakeFeederSub;
+import org.firstinspires.ftc.teamcode.Telemetry.TelemetryMethods;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "First Real Auto", group = "Tests")
 public class FirstRealAuto extends LinearOpMode {
     Follower follower;
-    IntakeFeederSub intakeFeederSub;
+    SubsystemsInitializer subsystemsInitializer;
+    TelemetryMethods telemetryMethods;
     Pose startPose = new Pose(21,121,Math.toRadians(143.5));
-    Pose shootingFtPose = new Pose(60.819, 81.560, Math.toRadians(143.5));
-    Pose firstIntakePose = new Pose(14.337, 82.105, Math.toRadians(180));
-    Pose shootingScPose = new Pose(37.382, 103.629, Math.toRadians(143.5));
-    Pose secondIntakePose = new Pose(44.042, 58.054, Math.toRadians(180));
-    Pose finishScdIntakePose = new Pose(12.550, 58.535, Math.toRadians(180));
+    Pose shootingFtPose = new Pose(60.819, 78, Math.toRadians(135));
+    Pose firstIntakePose = new Pose(14, 78, Math.toRadians(180));
+    Pose shootingScPose = new Pose(37.382, 103.629, Math.toRadians(137.5));
+    Pose secondIntakePose = new Pose(44.042, 53.5, Math.toRadians(180));
+    Pose finishScdIntakePose = new Pose(13.5, 53.5, Math.toRadians(180));
     Pose controlPointPose = new Pose(39.189, 64.825, Math.toRadians(143.5));
-    Pose shootingThrdPose = new Pose(48.361, 92.467, Math.toRadians(143.5));
+    Pose shootingThrdPose = new Pose(48.361, 92.467, Math.toRadians(133));
     Pose lastPose = new Pose(19.193,59.608, Math.toRadians(143.5));
     PathChain firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, seventhLine, eighthLine;
 
@@ -37,7 +43,8 @@ public class FirstRealAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Scheduler.reset();
-        intakeFeederSub = new IntakeFeederSub(hardwareMap);
+        subsystemsInitializer = new SubsystemsInitializer(hardwareMap);
+        telemetryMethods = new TelemetryMethods(telemetry);
         follower = Constants.createFollower(hardwareMap);
         buildPaths();
         follower.setStartingPose(startPose);
@@ -57,7 +64,7 @@ public class FirstRealAuto extends LinearOpMode {
     public void buildPaths() {
         firstLine = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, shootingFtPose))
-                .setConstantHeadingInterpolation(startPose.getHeading())
+                .setLinearHeadingInterpolation(startPose.getHeading(), shootingFtPose.getHeading())
                 .build();
         thirdLine = follower.pathBuilder()
                 .addPath(new BezierLine(shootingFtPose, firstIntakePose))
@@ -77,7 +84,7 @@ public class FirstRealAuto extends LinearOpMode {
                 .build();
         seventhLine = follower.pathBuilder()
                 .addPath(new BezierCurve(finishScdIntakePose, controlPointPose, shootingThrdPose))
-                .setLinearHeadingInterpolation(finishScdIntakePose.getHeading(), controlPointPose.getHeading())
+                .setLinearHeadingInterpolation(finishScdIntakePose.getHeading(), shootingThrdPose.getHeading())
                 .build();
         eighthLine = follower.pathBuilder()
                 .addPath(new BezierLine(shootingThrdPose, lastPose))
@@ -87,12 +94,15 @@ public class FirstRealAuto extends LinearOpMode {
     public Command routine(){
         return sequential(
                 follow(follower, firstLine),
-                follow(follower, thirdLine),
+                subsystemsInitializer.automatizedShootCmd,
+                race(follow(follower, thirdLine), intakeFeederSub.intakeFeederCdm),
                 follow(follower, fourthLine),
+                subsystemsInitializer.automatizedShootCmd,
                 follow(follower, fifthLine),
-                follow(follower, sixthLine),
+                race(follow(follower, sixthLine), intakeFeederSub.intakeFeederCdm),
                 follow(follower, seventhLine),
-                follow(follower, eighthLine),
+                subsystemsInitializer.automatizedShootCmd,
+//                follow(follower, eighthLine),
                 instant(this::terminateOpModeNow)
         );
     }

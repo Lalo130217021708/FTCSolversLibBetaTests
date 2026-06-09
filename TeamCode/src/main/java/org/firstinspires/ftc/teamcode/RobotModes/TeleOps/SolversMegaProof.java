@@ -19,6 +19,7 @@ import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.shooterSub;
 import static org.firstinspires.ftc.teamcode.pedroPathing.Constants.createFollower;
 
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -43,6 +44,7 @@ public class SolversMegaProof extends OpMode {
         telemetryMethods = new TelemetryMethods(telemetry);
         subsystemsInitializer = new SubsystemsInitializer(hardwareMap);
         follower = createFollower(hardwareMap);
+        telemetry = new MultipleTelemetry(telemetry, telemetryMethods.dashTelemetry);
     }
 
     @Override

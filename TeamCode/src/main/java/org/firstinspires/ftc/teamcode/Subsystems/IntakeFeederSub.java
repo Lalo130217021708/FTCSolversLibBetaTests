@@ -18,7 +18,7 @@ public class IntakeFeederSub {
     public IntakeFeederSub(HardwareMap hardwareMap) {
         intakeMotor = new Motor(hardwareMap, "intakeMotor");
         feederMotor = new Motor(hardwareMap, "feederMotor");
-        intakeMotor.setInverted(false);
+        intakeMotor.setInverted(true);
         feederMotor.setInverted(false);
         intakeMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         feederMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
@@ -36,8 +36,8 @@ public class IntakeFeederSub {
         feederMotor.set(.85);
     }
     public void stop(){
-        intakeMotor.set(0.55);
-        feederMotor.set(0.55);
+        intakeMotor.set(0);
+        feederMotor.set(0);
     }
     public Command intakeFeederCdm = new Command() {
 
@@ -79,7 +79,7 @@ public class IntakeFeederSub {
         @Override
         public void execute() {
             intake(1);
-            feeder(.55);
+            feeder(.2);
         }
 
         @Override

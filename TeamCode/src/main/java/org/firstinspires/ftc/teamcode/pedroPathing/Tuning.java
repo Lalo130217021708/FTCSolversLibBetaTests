@@ -1108,7 +1108,7 @@ class DriveTuner extends OpMode {
 
     @Override
     public void init() {
-        follower.setStartingPose(new Pose(72, 72));
+        follower.setStartingPose(new Pose(0, 0));
     }
 
     /**
@@ -1132,13 +1132,13 @@ class DriveTuner extends OpMode {
 
         forwards = follower.pathBuilder()
                 .setGlobalDeceleration()
-                .addPath(new BezierLine(new Pose(72,72), new Pose(DISTANCE + 72,72)))
+                .addPath(new BezierLine(new Pose(0,0), new Pose(DISTANCE + 0,0)))
                 .setConstantHeadingInterpolation(0)
                 .build();
 
         backwards = follower.pathBuilder()
                 .setGlobalDeceleration()
-                .addPath(new BezierLine(new Pose(DISTANCE + 72,72), new Pose(72,72)))
+                .addPath(new BezierLine(new Pose(DISTANCE + 0,0), new Pose(0,0)))
                 .setConstantHeadingInterpolation(0)
                 .build();
 
@@ -1153,6 +1153,7 @@ class DriveTuner extends OpMode {
     public void loop() {
         follower.update();
         drawCurrentAndHistory();
+        Drawing.drawPath(backwards, "Red");
 
         if (!follower.isBusy()) {
             if (forward) {
@@ -1167,6 +1168,7 @@ class DriveTuner extends OpMode {
         telemetryM.debug("Driving forward?: " + forward);
         telemetryM.addData("Zero Line", 0);
         telemetryM.addData("Error", follower.errorCalculator.getDriveErrors()[1]);
+        telemetryM.addData("breakingStrenght", Constants.getBrakingStrenght());
         telemetryM.update(telemetry);
     }
 }
@@ -1219,6 +1221,8 @@ class Line extends OpMode {
     public void loop() {
         follower.update();
         drawCurrentAndHistory();
+        Drawing.drawPath(backwards, "Red");
+
 
         if (!follower.isBusy()) {
             if (forward) {
@@ -1231,6 +1235,7 @@ class Line extends OpMode {
         }
 
         telemetryM.debug("Driving Forward?: " + forward);
+
         telemetryM.update(telemetry);
     }
 }
@@ -1294,6 +1299,7 @@ class CentripetalTuner extends OpMode {
     public void loop() {
         follower.update();
         drawCurrentAndHistory();
+        Drawing.drawPath(backwards, "Green");
         if (!follower.isBusy()) {
             if (forward) {
                 forward = false;
