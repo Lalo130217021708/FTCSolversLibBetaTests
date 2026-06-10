@@ -1,15 +1,10 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.distance;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.configurableRPMs;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.d;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.dShooter;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.f;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.fShooter;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.i;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.iShooter;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.p;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.pShooter;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.dShooter;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.fShooter;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.iShooter;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.pShooter;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.seattlesolvers.solverslib.controller.PIDFController;
@@ -21,7 +16,7 @@ import org.firstinspires.ftc.teamcode.ControlSystems.VoltageCompensator;
 
 public class ShooterSub {
     private final MotorEx shooterMotor, shooterMotor2;
-    public static double shooterCPR, shooterPos, shooterRate, shooterVel, shooterVel2, rpmsError;
+    public static double shooterVel, shooterVel2, rpmsError;
     private final MotorGroup shooterMotors;
     public static InterpLUT interpLUT;
     private final VoltageCompensator voltageCompensator;
@@ -54,12 +49,8 @@ public class ShooterSub {
     public void getRPMsError(){
         rpmsError = desiredRPMs - ((shooterVel + shooterVel2)/2);
     }
-    public void getShooterMotorCPR(){shooterCPR = shooterMotor.getCPR();}
-    public void getShooterPos(){shooterPos = shooterMotor.getCurrentPosition() / shooterMotor.getCPR();}
-    public void getShooterRate(){shooterRate = shooterMotor.getRate();}
-    public double getShooterVel(){
+    public void getShooterVel(){
         shooterVel = shooterMotor.getVelocity()/28 * 60;
-        return shooterVel;
     }
     public void getInterpLUT(){
         desiredRPMs = interpLUT.get(distance);
@@ -69,9 +60,6 @@ public class ShooterSub {
     }
     public void getGetters(){
         getRPMsError();
-        getShooterMotorCPR();
-        getShooterPos();
-        getShooterRate();
         getShooterVel();
         getShooterVel2();
     }
@@ -88,8 +76,8 @@ public class ShooterSub {
         interpLUT.add(85, 4145);
         interpLUT.add(95, 4230);
         interpLUT.add(105, 4400);
-        interpLUT.add(120, 4570);
-        interpLUT.add(130, 4760);
+        interpLUT.add(120, 4550);
+        interpLUT.add(130, 4700);
 
         interpLUT.createLUT();
     }

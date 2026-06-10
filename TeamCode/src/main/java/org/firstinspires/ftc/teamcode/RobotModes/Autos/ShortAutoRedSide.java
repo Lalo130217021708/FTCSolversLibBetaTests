@@ -1,7 +1,11 @@
 package org.firstinspires.ftc.teamcode.RobotModes.Autos;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.instant;
+import static com.pedropathing.ivy.groups.Groups.race;
+import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.pedro.PedroCommands.follow;
+import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
@@ -10,29 +14,26 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.PathChain;
-import static com.pedropathing.ivy.Scheduler.*;
-import static com.pedropathing.ivy.commands.Commands.instant;
-import static com.pedropathing.ivy.pedro.PedroCommands.*;
-import static com.pedropathing.ivy.groups.Groups.*;
-
-import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer;
 import org.firstinspires.ftc.teamcode.Telemetry.TelemetryMethods;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "Short Blue Side", group = "Tests")
-public class ShortAutoBlueSide extends LinearOpMode {
+@Autonomous(name = "Short Red Side", group = "Tests")
+public class ShortAutoRedSide extends LinearOpMode {
     Follower follower;
     SubsystemsInitializer subsystemsInitializer;
     TelemetryMethods telemetryMethods;
-    Pose startPose = new Pose(21,123,Math.toRadians(143.5));
     public PathChain MainChain;
     public PathChain Chain2;
     public PathChain Chain3;
     public PathChain Chain4;
     public PathChain Chain5;
     public PathChain Chain6;
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         Scheduler.reset();
@@ -40,7 +41,7 @@ public class ShortAutoBlueSide extends LinearOpMode {
         telemetryMethods = new TelemetryMethods(telemetry);
         follower = Constants.createFollower(hardwareMap);
         buildPaths();
-        follower.setStartingPose(startPose);
+        follower.setStartingPose(new Pose(119, 123, Math.toRadians(37.5)));
 
         waitForStart();
         schedule(routine());
@@ -54,30 +55,29 @@ public class ShortAutoBlueSide extends LinearOpMode {
             telemetry.update();
         }
     }
-
-    public void buildPaths(){
+    public void buildPaths() {
         MainChain = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(21.000, 121.000),
-                                new Pose(52.276, 88.132)
+                                new Pose(119.000, 123.000),
+                                new Pose(92.180, 90.518)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(143), Math.toRadians(137.5))
+                .setLinearHeadingInterpolation(Math.toRadians(37), Math.toRadians(50))
                 .build();
 
         Chain2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(58.179, 82.410),
-                                new Pose(39.041, 58.570)
+                                new Pose(92.180, 90.518),
+                                new Pose(99, 58.427)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(137.5), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(50), Math.toRadians(0))
                 .addPath(
                         new BezierLine(
-                                new Pose(39.041, 58.570),
-                                new Pose(9.587, 58.958)
+                                new Pose(99, 58.427),
+                                new Pose(133.148, 57.813)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -86,37 +86,37 @@ public class ShortAutoBlueSide extends LinearOpMode {
         Chain3 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(13.194, 58.598),
-                                new Pose(37.977, 62.222),
-                                new Pose(13.7, 63.960)
+                                new Pose(133.148, 57.813),
+                                new Pose(98.088, 61.400),
+                                new Pose(129.673, 63.677)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
                 .build();
 
         Chain4 = follower.pathBuilder()
                 .addPath(
                         new BezierCurve(
-                                new Pose(14.019, 63.960),
-                                new Pose(51.007, 57.531),
-                                new Pose(58.178746376811596, 82.40986956521739)
+                                new Pose(129.673, 63.677),
+                                new Pose(103.594, 64.753),
+                                new Pose(82.931, 82.219)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(137.5))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(47.5))
                 .build();
 
         Chain5 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(58.179, 82.410),
-                                new Pose(45.475, 82.410)
+                                new Pose(82.931, 82.219),
+                                new Pose(103.015, 82.108)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(137.5), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(47.5), Math.toRadians(0))
                 .addPath(
                         new BezierLine(
-                                new Pose(45.475, 82.410),
-                                new Pose(11.208, 82.410)
+                                new Pose(103.015, 82.108),
+                                new Pose(125.638, 81.971)
                         )
                 )
                 .setTangentHeadingInterpolation()
@@ -125,35 +125,24 @@ public class ShortAutoBlueSide extends LinearOpMode {
         Chain6 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(14.520, 82.345),
-                                new Pose(37.160, 103.466)
+                                new Pose(125.638, 81.971),
+                                new Pose(106.311, 103.585)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(137.5))
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(47.5))
                 .build();
     }
-
     public Command routine(){
         return sequential(
-                /// Start to Shooting Pose ///
                 follow(follower, MainChain),
-                /// Shooting Time !!! ///
                 subsystemsInitializer.automatizedShootCmd,
-                /// Shooting Pose to iIntaking second row ///
                 race(follow(follower, Chain2), intakeFeederSub.intakeFeederCdm),
-                /// Second Intake Pose to open Gate ///
                 follow(follower, Chain3),
-                /// Gate to shooting Pose ///
                 follow(follower, Chain4),
-                /// Shooting Time !!! ///
                 subsystemsInitializer.automatizedShootCmd,
-                /// Shooting Pose to intaking first row ///
                 race(follow(follower, Chain5), intakeFeederSub.intakeFeederCdm),
-                /// First row to Shooting ///
                 follow(follower, Chain6),
-                /// Shooting Time !!! ///
                 subsystemsInitializer.automatizedShootCmd,
-                /// From Intake to shooting pose ///
                 instant(this::terminateOpModeNow)
         );
     }

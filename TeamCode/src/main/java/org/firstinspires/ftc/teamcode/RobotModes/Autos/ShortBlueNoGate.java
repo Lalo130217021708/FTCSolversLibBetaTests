@@ -16,15 +16,13 @@ import static com.pedropathing.ivy.pedro.PedroCommands.*;
 import static com.pedropathing.ivy.groups.Groups.*;
 
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
-import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.shooterSub;
 
 import org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer;
-import org.firstinspires.ftc.teamcode.Subsystems.IntakeFeederSub;
 import org.firstinspires.ftc.teamcode.Telemetry.TelemetryMethods;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "First Real Auto", group = "Tests")
-public class FirstRealAuto extends LinearOpMode {
+@Autonomous(name = "Short Blue No Gate", group = "Tests")
+public class ShortBlueNoGate extends LinearOpMode {
     Follower follower;
     SubsystemsInitializer subsystemsInitializer;
     TelemetryMethods telemetryMethods;
@@ -35,7 +33,7 @@ public class FirstRealAuto extends LinearOpMode {
     Pose secondIntakePose = new Pose(44.042, 53.5, Math.toRadians(180));
     Pose finishScdIntakePose = new Pose(13.5, 53.5, Math.toRadians(180));
     Pose controlPointPose = new Pose(39.189, 64.825, Math.toRadians(143.5));
-    Pose shootingThrdPose = new Pose(48.361, 92.467, Math.toRadians(133));
+    Pose shootingThrdPose = new Pose(48.361, 92.467, Math.toRadians(137.5));
     Pose lastPose = new Pose(19.193,59.608, Math.toRadians(143.5));
     PathChain firstLine, secondLine, thirdLine, fourthLine, fifthLine, sixthLine, seventhLine, eighthLine;
 

@@ -27,12 +27,6 @@ public class Limelight {
     public static final double CAMERA_HEIGHT = 12.75;
     public static final double GOAL_HEIGHT = 29.5;
 
-    private final double X_GOAL_POSE = -74;
-
-    private final double y_GOAL_POSE = -74;
-
-    private double tan, xPose, yPose;
-
 
     public Limelight(HardwareMap hardwareMap){
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
@@ -50,9 +44,10 @@ public class Limelight {
     }
 
     public void getBotPose(){
+
         result = limelight.getLatestResult();
         limelight.updateRobotOrientation(actualYaw);
-        if(result != null && result.isValid()){
+        if(result != null && result.isValid() && (id == 20 || id == 24)){
             Pose3D mt1 = result.getBotpose();
             if(mt1 != null){
                 xBotPose = mt1.getPosition().x / .0254;
@@ -108,10 +103,12 @@ public class Limelight {
     }
 
     public double getGoalSetPoint(){
-        xPose = X_GOAL_POSE - xBotPose;
-        yPose = y_GOAL_POSE - yBotPose;
+        double x_GOAL_POSE = -74;
+        double xPose = x_GOAL_POSE - xBotPose;
+        double y_GOAL_POSE = -74;
+        double yPose = y_GOAL_POSE - yBotPose;
 
-        tan = xPose/yPose;
+        double tan = xPose / yPose;
         return Math.atan(tan);
 
     }

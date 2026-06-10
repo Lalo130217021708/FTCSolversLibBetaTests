@@ -13,18 +13,9 @@ import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.pedropathing.ivy.Command;
-import com.pedropathing.ivy.behaviors.BlockedBehavior;
-import com.pedropathing.ivy.behaviors.ConflictBehavior;
-import com.pedropathing.ivy.behaviors.EndCondition;
-import com.pedropathing.ivy.behaviors.InterruptedBehavior;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import java.util.Collections;
-import java.util.Set;
 
 public class TelemetryMethods {
     FtcDashboard ftcDashboard = FtcDashboard.getInstance();
@@ -34,52 +25,7 @@ public class TelemetryMethods {
     public TelemetryMethods(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
-    public Command telemetryCmd = new Command() {
-        @Override
-        public Set<Object> requirements() {
-            return Collections.emptySet();
-        }
 
-        @Override
-        public int priority() {
-            return 0;
-        }
-
-        @Override
-        public InterruptedBehavior interruptedBehavior() {
-            return null;
-        }
-
-        @Override
-        public ConflictBehavior conflictBehavior() {
-            return null;
-        }
-
-        @Override
-        public BlockedBehavior blockedBehavior() {
-            return null;
-        }
-
-        @Override
-        public void start() {
-
-        }
-
-        @Override
-        public boolean done() {
-            return false;
-        }
-
-        @Override
-        public void execute() {
-            getRobotTelemetry();
-        }
-
-        @Override
-        public void end(EndCondition endCondition) {
-
-        }
-    };
     public void getRobotTelemetry() {
         getLimelightValues();
         getShooterValues();

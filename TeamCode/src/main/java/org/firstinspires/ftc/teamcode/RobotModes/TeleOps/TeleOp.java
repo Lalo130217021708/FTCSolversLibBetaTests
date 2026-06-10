@@ -22,20 +22,16 @@ import static org.firstinspires.ftc.teamcode.pedroPathing.Constants.createFollow
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Initializers.ControllerInitializer;
 import org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer;
 import org.firstinspires.ftc.teamcode.Telemetry.TelemetryMethods;
 
-@TeleOp(name = "Solvers Mega Proof", group = "SolversLib")
-public class SolversMegaProof extends OpMode {
+@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Solvers Mega Proof", group = "SolversLib")
+public class TeleOp extends OpMode {
     ControllerInitializer controllerInitializer;
     TelemetryMethods telemetryMethods;
     SubsystemsInitializer subsystemsInitializer;
-
-    public static boolean fieldCentric = false;
-    public static boolean oncePressed = false;
     Follower follower;
 
     @Override
@@ -65,7 +61,7 @@ public class SolversMegaProof extends OpMode {
 
 
         if (A1 == 1) {
-            mecanumDriveSub.aprilTagTracking(LSx1, LSy1);
+            mecanumDriveSub.aprilTagTracking(LSx1, LSy1, -RSx1);
         } else {
             mecanumDriveSub.driveRobotPOV(LSx1, LSy1, RSx1);
         }

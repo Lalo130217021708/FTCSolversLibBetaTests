@@ -49,17 +49,13 @@ public class SubsystemsInitializer {
             intakeFeederSub.intake(1);
             intakeFeederSub.feeder(1);
             once = true;
-        } else if (true){
-            intakeFeederSub.intake(0.55);
-            intakeFeederSub.feeder(0.55);
+        } else if (once){
+            intakeFeederSub.intake(0.4);
+            intakeFeederSub.feeder(0.4);
         } else {
-            once = false;
             intakeFeederSub.intake(0);
             intakeFeederSub.feeder(0);
         }
-     }
-     public void activateShooter(){
-        shooterSub.shootRPMs();
      }
 
      public Command automatizedShootCmd  = new Command() {
@@ -96,18 +92,14 @@ public class SubsystemsInitializer {
 
          @Override
          public boolean done() {
-             if(elapsedTime.seconds() > 3.6){
-                 return true;
-             } else {
-                 return false;
-             }
-
+             return elapsedTime.seconds() > 3.6;
          }
 
          @Override
          public void execute() {
              limelight.getLimeValues();
              limelight.getDistanceToAt();
+             mecanumDriveSub.aprilTagTracking(0,0, 0);
              shooterSub.getGetters();
              shooterSub.getInterpLUT();
              automatizedShoot();
@@ -119,4 +111,56 @@ public class SubsystemsInitializer {
             intakeFeederSub.stop();
          }
      };
+    public Command automatizedShootCmdLong  = new Command() {
+
+        @Override
+        public Set<Object> requirements() {
+            return Collections.emptySet();
+        }
+
+        @Override
+        public int priority() {
+            return 0;
+        }
+
+        @Override
+        public InterruptedBehavior interruptedBehavior() {
+            return null;
+        }
+
+        @Override
+        public ConflictBehavior conflictBehavior() {
+            return null;
+        }
+
+        @Override
+        public BlockedBehavior blockedBehavior() {
+            return null;
+        }
+
+        @Override
+        public void start() {
+            elapsedTime.reset();
+        }
+
+        @Override
+        public boolean done() {
+            return elapsedTime.seconds() > 4.5;
+        }
+
+        @Override
+        public void execute() {
+            limelight.getLimeValues();
+            limelight.getDistanceToAt();
+            shooterSub.getGetters();
+            shooterSub.getInterpLUT();
+            automatizedShoot();
+        }
+
+        @Override
+        public void end(EndCondition endCondition) {
+            shooterSub.stop();
+            intakeFeederSub.stop();
+        }
+    };
 }

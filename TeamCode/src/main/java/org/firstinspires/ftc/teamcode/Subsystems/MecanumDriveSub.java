@@ -1,23 +1,18 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
+import static org.firstinspires.ftc.teamcode.Camera.Limelight.id;
 import static org.firstinspires.ftc.teamcode.Camera.Limelight.tx;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.d;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.f;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.i;
-import static org.firstinspires.ftc.teamcode.Configurations.ConfigurableVariables.shooterConfigurableVariables.p;
-import static org.firstinspires.ftc.teamcode.Configurations.DriveConstants.WheelsPoses;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.d;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.f;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.i;
+import static org.firstinspires.ftc.teamcode.Configurations.PIDValues.shooterConfigurableVariables.p;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.seattlesolvers.solverslib.controller.PIDFController;
 import com.seattlesolvers.solverslib.drivebase.MecanumDrive;
-import com.seattlesolvers.solverslib.geometry.Rotation2d;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.motors.MotorEx;
-import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.ChassisSpeeds;
-import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.MecanumDriveKinematics;
-import com.seattlesolvers.solverslib.kinematics.wpilibkinematics.MecanumDriveWheelSpeeds;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Camera.Limelight;
@@ -29,17 +24,10 @@ public class MecanumDriveSub {
     public static double[] pos = new double[3];
     boolean onceSaved = false;
     public static double setPoint, yVelocity, xVelocity;
-    double savedYaw, savedX, savedY, savedZ, timer;
 
 
     /// Drive Bases Controllers Creators and Initializers
     MecanumDrive mecanumDrive;
-    MecanumDriveKinematics mecanumDriveKinematics = new MecanumDriveKinematics(
-            WheelsPoses.frontLeftPose,
-            WheelsPoses.frontRightPose,
-            WheelsPoses.rearLeftPose,
-            WheelsPoses.rearRightPose
-    );
 
     /// Hardware Creators
     private final MotorEx frontLeftMotor;
@@ -51,10 +39,7 @@ public class MecanumDriveSub {
     /// PIDFControllers and Coefficients Creators
     PIDFController aprilTagController;
 
-    private Limelight limelight;
-
-    /// Utilities
-    ElapsedTime elapsedTime = new ElapsedTime();
+    private final Limelight limelight;
     public MecanumDriveSub(HardwareMap hardwareMap, Limelight limelight) {
         /// Motor Getters and Configurators
         frontLeftMotor = new MotorEx(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
@@ -91,32 +76,14 @@ public class MecanumDriveSub {
 
 
     /// Chassis Functions
-    public void driveDriverPOV(double xInput, double yInput, double zInput){
-        savedYaw = actualYaw;
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.toFieldRelativeSpeeds(
-                new ChassisSpeeds(
-                    xInput,
-                    yInput,
-                    zInput
-                ),
-                getHeading()
-        );
-
-        MecanumDriveWheelSpeeds mecanumDriveWheelSpeeds = mecanumDriveKinematics.toWheelSpeeds(chassisSpeeds);
-
-        frontLeftMotor.set(-mecanumDriveWheelSpeeds.frontLeftMetersPerSecond);
-        frontRightMotor.set(-mecanumDriveWheelSpeeds.frontRightMetersPerSecond);
-        rearLeftMotor.set(mecanumDriveWheelSpeeds.rearLeftMetersPerSecond);
-        rearRightMotor.set(mecanumDriveWheelSpeeds.rearRightMetersPerSecond);
-    }
     public void driveRobotPOV(double xInput, double yInput, double zInput){
             mecanumDrive.driveRobotCentric(-xInput, yInput, -zInput);
     }
-    public void aprilTagTracking(double xInput, double yInput){
+    public void aprilTagTracking(double xInput, double yInput, double zInput){
         aprilTagController = new PIDFController(p,i,d,f);
         setPoint = limelight.getGoalSetPoint();
 
-        double zCalculations = aprilTagController.calculate(tx, -setPoint);
+        double zCalculations = id == 20 || id == 24 ? aprilTagController.calculate(tx, -setPoint) : zInput;
         driveRobotPOV(xInput*.5, yInput*.5, -zCalculations);
     }
     public void stopMotors(){
@@ -142,8 +109,8 @@ public class MecanumDriveSub {
     public void getActualYaw(){
         actualYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
-    public Rotation2d getHeading(){
-        return Rotation2d.fromDegrees(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+    public void getHeading(){
+        imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
     public void getVelocity(){
         xVelocity = rearLeftMotor.getVelocity() * 0.00296843400339;
@@ -171,7 +138,6 @@ public class MecanumDriveSub {
         pos[0] = 0;
         pos[1] = 0;
         pos[2] = 0;
-        savedYaw = 0;
         onceSaved = false;
      }
      public void resetAllChassisValues(){

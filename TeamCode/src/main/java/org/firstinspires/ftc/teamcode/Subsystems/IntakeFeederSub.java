@@ -30,11 +30,6 @@ public class IntakeFeederSub {
     public void feeder(double power) {
         feederMotor.set(power);
     }
-
-    public void moveContinuously(){
-        intakeMotor.set(.70);
-        feederMotor.set(.85);
-    }
     public void stop(){
         intakeMotor.set(0);
         feederMotor.set(0);
