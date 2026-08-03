@@ -21,8 +21,8 @@ import org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer;
 import org.firstinspires.ftc.teamcode.Telemetry.TelemetryMethods;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "Short Red No Gate", group = "Tests")
-public class ShortRedNoGate extends LinearOpMode {
+@Autonomous(name = "Red Using Gate", group = "Tests")
+public class RedUsingGate extends LinearOpMode {
     Follower follower;
     SubsystemsInitializer subsystemsInitializer;
     TelemetryMethods telemetryMethods;
@@ -32,6 +32,7 @@ public class ShortRedNoGate extends LinearOpMode {
     public PathChain Chain4;
     public PathChain Chain5;
     public PathChain Chain6;
+    public PathChain Chain7;
 
 
     @Override
@@ -59,80 +60,82 @@ public class ShortRedNoGate extends LinearOpMode {
         MainChain = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(119.000, 123.000),
-                                new Pose(84.182, 82.798)
+                                new Pose(119.000, 123.100),
+                                new Pose(96.499, 94.863)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(37.5), Math.toRadians(43))
+                .setLinearHeadingInterpolation(Math.toRadians(37.5), Math.toRadians(44))
                 .build();
 
         Chain2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(84.182, 82.798),
-                                new Pose(100.450, 82.151)
+                                new Pose(96.499, 94.863),
+                                new Pose(97.127, 60.729)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(43), Math.toRadians(0))
-                .addPath(
-                        new BezierLine(
-                                new Pose(100.450, 82.151),
-                                new Pose(126.899, 81.598)
-                        )
-                )
-                .setTangentHeadingInterpolation()
+                .setLinearHeadingInterpolation(Math.toRadians(44), Math.toRadians(0))
                 .build();
 
         Chain3 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(126.899, 81.598),
-                                new Pose(99.819, 99.460)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(43))
-                .build();
-
-        Chain4 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(99.819, 99.460),
-                                new Pose(98.586, 58.219)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(43), Math.toRadians(0))
-                .build();
-
-        Chain5 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(98.586, 58.219),
-                                new Pose(126.753, 57.919)
+                                new Pose(97.127, 60.729),
+                                new Pose(123.628, 60.666)
                         )
                 )
                 .setTangentHeadingInterpolation()
                 .build();
 
+        Chain4 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(123.628, 60.666),
+                                new Pose(117.865, 60.675)
+                        )
+                )
+                .setConstantHeadingInterpolation(Math.toRadians(0))
+                .addPath(
+                        new BezierCurve(
+                                new Pose(117.865, 60.675),
+                                new Pose(90.312, 72.558),
+                                new Pose(83.158, 82.540)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(44))
+                .build();
+
         Chain6 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(126.753, 57.919),
-                                new Pose(86.489, 86.592)
+                                new Pose(83.158, 82.540),
+                                new Pose(122.540, 82.144)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(43))
+                .setTangentHeadingInterpolation()
+                .build();
+
+        Chain7 = follower.pathBuilder()
+                .addPath(
+                        new BezierLine(
+                                new Pose(122.540, 82.144),
+                                new Pose(96.262, 94.622)
+                        )
+                )
+                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(44))
                 .build();
     }
     public Command routine(){
         return sequential(
                 follow(follower, MainChain),
                 subsystemsInitializer.automatizedShootCmd,
-                race(follow(follower, Chain2), intakeFeederSub.intakeFeederCdm),
-                follow(follower, Chain3),
-                subsystemsInitializer.automatizedShootCmd,
+                follow(follower, Chain2),
+                race(follow(follower, Chain3),intakeFeederSub.intakeFeederCdm),
                 follow(follower, Chain4),
-                race(follow(follower, Chain5), intakeFeederSub.intakeFeederCdm),
-                follow(follower, Chain6),
+                subsystemsInitializer.automatizedShootCmd,
+                follow(follower, Chain5),
+                race(follow(follower, Chain6), intakeFeederSub.intakeFeederCdm),
+                follow(follower, Chain7),
                 subsystemsInitializer.automatizedShootCmd,
                 instant(this::terminateOpModeNow)
         );

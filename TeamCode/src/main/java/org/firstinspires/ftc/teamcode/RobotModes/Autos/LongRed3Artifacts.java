@@ -5,9 +5,11 @@ import static com.pedropathing.ivy.commands.Commands.instant;
 import static com.pedropathing.ivy.groups.Groups.race;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
+
 import static org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer.intakeFeederSub;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.ivy.Command;
@@ -20,20 +22,23 @@ import org.firstinspires.ftc.teamcode.Initializers.SubsystemsInitializer;
 import org.firstinspires.ftc.teamcode.Telemetry.TelemetryMethods;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "Long Red Side", group = "Tests")
-public class LongAutoRedSide extends LinearOpMode {
+@Autonomous
+        (name = "Long Red 3 Artifacts", group = "tests")
+public class LongRed3Artifacts extends LinearOpMode {
+
     Follower follower;
     SubsystemsInitializer subsystemsInitializer;
     TelemetryMethods telemetryMethods;
-    Pose startPose = new Pose(90.10428736964079, 7.836037079953655, Math.toRadians(90));
-    public PathChain MainChain;
-    public PathChain Chain2;
-    public PathChain Chain3;
-    public PathChain Chain4;
 
-    public PathChain Chain5;
+    Pose startPose = new Pose(89.94032444959443, 7.999999999999984, Math.toRadians(90));
+
+    PathChain MainChain;
+    PathChain Chain2;
+
+
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
+
         Scheduler.reset();
         subsystemsInitializer = new SubsystemsInitializer(hardwareMap);
         telemetryMethods = new TelemetryMethods(telemetry);
@@ -54,12 +59,13 @@ public class LongAutoRedSide extends LinearOpMode {
         }
     }
 
+
     public void buildPaths(){
         MainChain = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(90.104, 7.836),
-                                new Pose(82.070, 13.701)
+                                new Pose(89.940, 8.000),
+                                new Pose(82.070, 15.997)
                         )
                 )
                 .setLinearHeadingInterpolation(Math.toRadians(90), Math.toRadians(63))
@@ -68,41 +74,11 @@ public class LongAutoRedSide extends LinearOpMode {
         Chain2 = follower.pathBuilder()
                 .addPath(
                         new BezierLine(
-                                new Pose(82.070, 13.701),
-                                new Pose(93.044, 34.527)
+                                new Pose(82.070, 15.997),
+                                new Pose(106.157, 10.062)
                         )
                 )
-                .setLinearHeadingInterpolation(Math.toRadians(63), Math.toRadians(0))
-                .build();
-
-        Chain3 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(93.044, 34.527),
-                                new Pose(128.392, 34.648)
-                        )
-                )
-                .setTangentHeadingInterpolation()
-                .build();
-
-        Chain4 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(128.392, 34.648),
-                                new Pose(82.235, 13.860)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(63))
-                .build();
-
-        Chain5 = follower.pathBuilder()
-                .addPath(
-                        new BezierLine(
-                                new Pose(82.235, 13.860),
-                                new Pose(108.500, 13.736)
-                        )
-                )
-                .setLinearHeadingInterpolation(Math.toRadians(63), Math.toRadians(180))
+                .setLinearHeadingInterpolation(Math.toRadians(63), Math.toRadians(90))
                 .build();
     }
 
@@ -113,15 +89,7 @@ public class LongAutoRedSide extends LinearOpMode {
                 /// Shooting Time !!! ///
                 subsystemsInitializer.automatizedShootCmdLong,
                 follow(follower,Chain2),
-                race(follow(follower,Chain3), intakeFeederSub.intakeFeederCdm),
-                follow(follower, Chain4),
-                /// Shooting Time !!! ///
-                subsystemsInitializer.automatizedShootCmdLong,
-                /// Leave the shooting zone !!!
-                follow(follower, Chain5),
-                /// From Intake to shooting pose ///
                 instant(this::terminateOpModeNow)
         );
     }
 }
-

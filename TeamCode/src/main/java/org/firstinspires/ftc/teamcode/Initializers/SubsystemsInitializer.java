@@ -50,13 +50,28 @@ public class SubsystemsInitializer {
             intakeFeederSub.feeder(1);
             once = true;
         } else if (once){
-            intakeFeederSub.intake(0.4);
-            intakeFeederSub.feeder(0.4);
+            intakeFeederSub.intake(0.6);
+            intakeFeederSub.feeder(0.6);
         } else {
             intakeFeederSub.intake(0);
             intakeFeederSub.feeder(0);
         }
      }
+
+    public void automatizedShootLong(){
+        shooterSub.shootRPMs();
+        if (Math.abs(shooterSub.desiredRPMs-shooterVel) < 65) {
+            intakeFeederSub.intake(.6);
+            intakeFeederSub.feeder(.6);
+            once = true;
+        } else if (once){
+            intakeFeederSub.intake(0.35);
+            intakeFeederSub.feeder(0.35);
+        } else {
+            intakeFeederSub.intake(0);
+            intakeFeederSub.feeder(0);
+        }
+    }
 
      public Command automatizedShootCmd  = new Command() {
 
@@ -145,7 +160,7 @@ public class SubsystemsInitializer {
 
         @Override
         public boolean done() {
-            return elapsedTime.seconds() > 4.5;
+            return elapsedTime.seconds() > 6;
         }
 
         @Override
@@ -154,7 +169,7 @@ public class SubsystemsInitializer {
             limelight.getDistanceToAt();
             shooterSub.getGetters();
             shooterSub.getInterpLUT();
-            automatizedShoot();
+            automatizedShootLong();
         }
 
         @Override

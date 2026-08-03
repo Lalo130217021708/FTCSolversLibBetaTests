@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
 import com.pedropathing.follower.Follower;
@@ -14,11 +13,11 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@Config
 public class Constants {
-
     public static double brakingStrenght = .2;
     public static double brakingStart = .175;
+
+    public static double multiplier = 1;
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(14)
             .forwardZeroPowerAcceleration(-24.530167827548517)
@@ -41,9 +40,9 @@ public class Constants {
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
 
     public static ThreeWheelIMUConstants localizerConstants = new ThreeWheelIMUConstants()
-            .forwardTicksToInches(0.00296843400339)
-            .strafeTicksToInches(0.00296843400339)
-            .turnTicksToInches(-.00296843400339)
+            .forwardTicksToInches(multiplier)
+            .strafeTicksToInches(multiplier)
+            .turnTicksToInches(multiplier)
             .strafePodX(-5.7)
             .leftPodY(8)
             .rightPodY(-8)
@@ -73,7 +72,6 @@ public class Constants {
                 .threeWheelIMULocalizer(localizerConstants)
                 .build();
     }
-
     public static double getBrakingStrenght(){
         return pathConstraints.getBrakingStrength();
     }

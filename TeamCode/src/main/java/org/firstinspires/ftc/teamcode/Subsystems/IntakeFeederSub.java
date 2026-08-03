@@ -74,7 +74,7 @@ public class IntakeFeederSub {
         @Override
         public void execute() {
             intake(1);
-            feeder(.2);
+            feeder(.35);
         }
 
         @Override

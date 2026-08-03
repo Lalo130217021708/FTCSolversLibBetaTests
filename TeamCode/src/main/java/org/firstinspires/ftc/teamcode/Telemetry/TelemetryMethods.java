@@ -12,15 +12,10 @@ import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.interpLUT;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel;
 import static org.firstinspires.ftc.teamcode.Subsystems.ShooterSub.shooterVel2;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class TelemetryMethods {
-    FtcDashboard ftcDashboard = FtcDashboard.getInstance();
-    TelemetryPacket telemetryPacket = new TelemetryPacket(false);
-    public Telemetry dashTelemetry = ftcDashboard.getTelemetry();
     Telemetry telemetry;
     public TelemetryMethods(Telemetry telemetry) {
         this.telemetry = telemetry;
@@ -31,11 +26,8 @@ public class TelemetryMethods {
         getShooterValues();
         getBotPose();
         getChassisVel();
-        ftcDashboard.sendTelemetryPacket(telemetryPacket);
     }
     public void getChassisVel(){
-        telemetryPacket.put("xVel", xVelocity);
-        telemetryPacket.put("yVel", yVelocity);
         telemetry.addData("xVel", xVelocity);
         telemetry.addData("yVel", yVelocity);
     }

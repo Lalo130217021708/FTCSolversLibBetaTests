@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Configurations;
 
+
 public class PIDValues {
     public static class shooterConfigurableVariables{
         public static final double pShooter = 0.0015;
@@ -11,5 +12,5 @@ public class PIDValues {
         public static final double d = .85;
         public static final double f = 0;
     }
-
 }
+
